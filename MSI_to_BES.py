@@ -13,7 +13,7 @@ BES_CUSTOM_SITE = "JamesTesting"
 BES_DEBUGGING = "testing"
 BES_INSTALLERS_LOCATION = "C:\Users\jgstew\Downloads"
 
-from msilib import *
+#from msilib import *
 def GetMsiProperty(path ,property):
     # requires "from msilib import *"
     db = OpenDatabase(path, MSIDBOPEN_READONLY)
@@ -102,11 +102,15 @@ def GetUninstallActionScriptMSI(path):
 def GetUninstallRelevanceMSI(path):
     return 'exists keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % (GetMsiProperty(path, "ProductName"))
 
-def GetPrefetchSingleFile(path):
+def GetPrefetchSingleFile(path, url = "", file_name = ""):
     import os
     import hashlib
+    
+    if not url:
+      url = BesRootUploadsUrl() + GetSHA1(path) + "/" + GetFileNameFromPath(path)
+      
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
-    return "prefetch %s sha1:%s size:%s %s" % (GetFileNameFromPath(path), GetSHA1(path) , os.path.getsize(path), BesRootUploadsUrl() + GetSHA1(path) + "/" + GetFileNameFromPath(path))
+    return "prefetch %s sha1:%s size:%s %s" % (GetFileNameFromPath(path), GetSHA1(path) , os.path.getsize(path), url)
 
 def CountNumFilesInDir(path, file_type = "*"):
     # http://stackoverflow.com/questions/3883138/how-do-i-read-the-number-of-files-in-a-folder-using-python

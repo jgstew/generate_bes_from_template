@@ -7,11 +7,11 @@
 
 BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
 BES_ROOT_SERVER_PORT = "52311"
-BES_USER_NAME = ""
-BES_PASSWORD = ""
+BES_USER_NAME = "BES_USER_NAME"
+BES_PASSWORD = "BES_PASSWORD"
 BES_CUSTOM_SITE = "JamesTesting"
 BES_DEBUGGING = "testing"
-BES_INSTALLERS_LOCATION = "C:\Users\jgstew\Downloads"
+BES_INSTALLERS_LOCATION = "C:\temp"
 
 from bes_file_utilities import *
 

@@ -13,6 +13,8 @@ BES_CUSTOM_SITE = "JamesTesting"
 BES_DEBUGGING = "testing"
 BES_INSTALLERS_LOCATION = "C:\Users\jgstew\Downloads"
 
+from bes_file_utilities import *
+
 #from msilib import *
 def GetMsiProperty(path ,property):
     # requires "from msilib import *"
@@ -109,8 +111,11 @@ def GetPrefetchSingleFile(path, url = "", file_name = ""):
     if not url:
       url = BesRootUploadsUrl() + GetSHA1(path) + "/" + GetFileNameFromPath(path)
       
+    if not file_name:
+      file_name = GetFileNameFromPath(path)
+      
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
-    return "prefetch %s sha1:%s size:%s %s" % (GetFileNameFromPath(path), GetSHA1(path) , os.path.getsize(path), url)
+    return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), url)
 
 def CountNumFilesInDir(path, file_type = "*"):
     # http://stackoverflow.com/questions/3883138/how-do-i-read-the-number-of-files-in-a-folder-using-python

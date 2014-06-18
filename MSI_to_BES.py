@@ -13,6 +13,7 @@ BES_CUSTOM_SITE = "JamesTesting"
 BES_DEBUGGING = "testing"
 BES_INSTALLERS_LOCATION = "C:\temp"
 
+from BES_CONFIG import *
 from bes_file_utilities import *
 
 #from msilib import *

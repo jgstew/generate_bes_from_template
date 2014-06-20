@@ -108,6 +108,7 @@ def GetUninstallRelevanceMSI(path):
 def GetPrefetchSingleFile(path, url = "", file_name = ""):
     import os
     import hashlib
+    import urllib
     
     if not file_name:
       file_name = GetFileNameFromPath(path)
@@ -116,7 +117,7 @@ def GetPrefetchSingleFile(path, url = "", file_name = ""):
       url = BesRootUploadsUrl() + GetSHA1(path) + "/" + file_name
       
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
-    return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), url)
+    return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), urllib.quote(url, ":/"))
 
 def CountNumFilesInDir(path, file_type = "*"):
     # http://stackoverflow.com/questions/3883138/how-do-i-read-the-number-of-files-in-a-folder-using-python

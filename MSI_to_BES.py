@@ -109,11 +109,11 @@ def GetPrefetchSingleFile(path, url = "", file_name = ""):
     import os
     import hashlib
     
-    if not url:
-      url = BesRootUploadsUrl() + GetSHA1(path) + "/" + GetFileNameFromPath(path)
-      
     if not file_name:
       file_name = GetFileNameFromPath(path)
+      
+    if not url:
+      url = BesRootUploadsUrl() + GetSHA1(path) + "/" + file_name
       
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
     return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), url)

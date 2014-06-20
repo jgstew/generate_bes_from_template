@@ -13,6 +13,10 @@ BES_CUSTOM_SITE = "JamesTesting"
 BES_DEBUGGING = "testing"
 BES_INSTALLERS_LOCATION = "C:\temp"
 
+#prevent *.pyc creation:   http://stackoverflow.com/questions/154443/how-to-avoid-pyc-files
+import sys
+sys.dont_write_bytecode = True
+
 from BES_CONFIG import *
 from bes_file_utilities import *
 

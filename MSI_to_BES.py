@@ -1,8 +1,6 @@
 #
 #  Written by James Stewart   -   james@jgstew.com
 #
-#  Free for noncommercial and educational use by Penn State University only. 
-#      Code not to be posted or made available outside of Penn State University.
 #
 
 BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"

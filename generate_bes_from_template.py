@@ -7,12 +7,16 @@ Created by James Stewart (@JGStew) on 2020-03-03.
 
 from __future__ import absolute_import
 
+import os
 import pystache
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
-    #renderer = pystache.Renderer()
-    return pystache.Renderer().render_path(template_dict['template_file_path'], template_dict)
+    file_path = template_dict['template_file_path']
+    # check if template file exists:
+    if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
+        # run render of template:
+        return pystache.Renderer().render_path(file_path, template_dict)
 
 
 def main():

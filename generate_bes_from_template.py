@@ -11,9 +11,8 @@ import pystache
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
-    print(template_dict)
     renderer = pystache.Renderer()
-    print (renderer.render_path(template_dict['template_file_path'], template_dict))
+    return renderer.render_path(template_dict['template_file_path'], template_dict)
 
 
 def main():
@@ -26,9 +25,14 @@ def main():
                 'title': 'Example Generated From Template!',
                 'download_size': 9999,
                 'prefetch': 'prefetch file.txt',
-                'action_script': 'delete /tmp/file.txt\ncopy __Download/file.txt /tmp/file.txt'
+                'action_script': 
+"""
+delete /tmp/file.txt
+copy __Download/file.txt /tmp/file.txt
+"""
                 }
-    generate_bes_from_template(template_dict)
+    print(template_dict)
+    print(generate_bes_from_template(template_dict))
 
 # if called directly, then run this example:
 if __name__ == '__main__':

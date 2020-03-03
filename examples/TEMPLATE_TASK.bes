@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BES.xsd">
+	<Task>
+		<Title>{{title}}</Title>
+		<Description><![CDATA[&lt;enter a description of the task here&gt; ]]></Description>
+		<Relevance>/*{{relevance}}*/ NOTHINGS</Relevance>
+		<Category></Category>
+		<DownloadSize>0</DownloadSize>
+		<Source>External</Source>
+		<SourceID>BigFix</SourceID>
+		<SourceReleaseDate>2020-03-03</SourceReleaseDate>
+		<SourceSeverity></SourceSeverity>
+		<CVENames></CVENames>
+		<SANSID></SANSID>
+		<MIMEField>
+			<Name>x-fixlet-modification-time</Name>
+			<Value>Tue, 03 Mar 2020 19:37:59 +0000</Value>
+		</MIMEField>
+		<Domain>BESC</Domain>
+		<DefaultAction ID="Action1">
+			<Description>
+				<PreLink>Click </PreLink>
+				<Link>here</Link>
+				<PostLink> to deploy this action.</PostLink>
+			</Description>
+			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell">
+// Change Mustache Token: {{=//{{ }}//=}}
+
+//{{prefetch}}//
+
+//{{action_script}}//
+
+// Revert Mustache Token: //{{={{ }}=}}//</ActionScript>
+		</DefaultAction>
+	</Task>
+</BES>

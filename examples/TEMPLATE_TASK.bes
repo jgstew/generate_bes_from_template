@@ -5,7 +5,7 @@
 		<Description><![CDATA[&lt;enter a description of the task here&gt; ]]></Description>
 		<Relevance>/*{{relevance}}*/ NOTHINGS</Relevance>
 		<Category></Category>
-		<DownloadSize>0</DownloadSize>
+		<DownloadSize>{{download_size}}</DownloadSize>
 		<Source>External</Source>
 		<SourceID>BigFix</SourceID>
 		<SourceReleaseDate>2020-03-03</SourceReleaseDate>

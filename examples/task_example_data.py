@@ -1,7 +1,7 @@
 
 template_dict = {
-                'template': 'examples/TEMPLATE_TASK.bes',
+                'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'title': 'Example Generated From Template!',
-                'size': 7,
+                'download_size': 9999,
                 'prefetch': 'prefetch file.txt'
                 }

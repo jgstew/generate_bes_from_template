@@ -21,9 +21,8 @@ def generate_bes_from_template(template_dict):
 
 def main():
     """Only called if this script is run directly"""
-    # get python dictionary with example config items (only works for python3?)
+    # get python dictionary with example config items
     #from examples.task_example_data import template_dict
-    #print(template_dict)
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'title': 'Example Generated From Template!',

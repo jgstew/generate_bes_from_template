@@ -9,17 +9,21 @@ from __future__ import absolute_import
 
 import os
 import pystache
+import datetime
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
     file_path = template_dict['template_file_path']
     # check if template file exists and readable:
     if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
+        if not('SourceReleaseDate' in template_dict):
+            template_dict['SourceReleaseDate']=yyyymmdd()
         # run render of template, return result:
         return pystache.Renderer().render_path(file_path, template_dict)
-    else:
-        return "ERROR: No Template File Found!"
+    return "ERROR: No Template File Found!"
 
+def yyyymmdd(separator="-", date_to_format=datetime.datetime.today()):
+    return date_to_format.strftime('%Y' + separator + '%m' + separator + '%d')
 
 def main():
     """Only called if this script is run directly"""
@@ -28,7 +32,8 @@ def main():
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'title': 'Example Generated From Template!',
-                'download_size': 9999,
+                'Description': 'This Task was generated automatically!',
+                'DownloadSize': 9999,
                 'prefetch': 'prefetch file.txt',
                 'action_script':
                 """

@@ -2,13 +2,13 @@
 <BES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BES.xsd">
 	<Task>
 		<Title>{{title}}</Title>
-		<Description><![CDATA[&lt;enter a description of the task here&gt; ]]></Description>
-		<Relevance>/*{{relevance}}*/ NOTHINGS</Relevance>
+		<Description><![CDATA[ {{Description}} ]]></Description>
+		<Relevance>/*{{Relevance}}*/ NOTHINGS</Relevance>
 		<Category></Category>
-		<DownloadSize>{{download_size}}</DownloadSize>
-		<Source>External</Source>
+		<DownloadSize>{{DownloadSize}}</DownloadSize>
+		<Source></Source>
 		<SourceID>BigFix</SourceID>
-		<SourceReleaseDate>2020-03-03</SourceReleaseDate>
+		<SourceReleaseDate>{{SourceReleaseDate}}</SourceReleaseDate>
 		<SourceSeverity></SourceSeverity>
 		<CVENames></CVENames>
 		<SANSID></SANSID>

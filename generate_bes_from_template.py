@@ -13,10 +13,12 @@ import pystache
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
     file_path = template_dict['template_file_path']
-    # check if template file exists:
+    # check if template file exists and readable:
     if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
-        # run render of template:
+        # run render of template, return result:
         return pystache.Renderer().render_path(file_path, template_dict)
+    else:
+        return "ERROR: No Template File Found!"
 
 
 def main():

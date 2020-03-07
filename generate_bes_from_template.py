@@ -19,6 +19,8 @@ def generate_bes_from_template(template_dict):
     if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
         if not 'SourceReleaseDate' in template_dict:
             template_dict['SourceReleaseDate'] = yyyymmdd()
+        if not 'x-fixlet-modification-time' in template_dict:
+            template_dict['x-fixlet-modification-time'] = fixlet_modification_time()
         # run render of template, return result:
         return pystache.Renderer().render_path(file_path, template_dict)
     return "ERROR: No Template File Found!"
@@ -38,7 +40,7 @@ def main():
     #from examples.task_example_data import template_dict
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
-                'title': 'Example Generated From Template!',
+                'title': 'Example Generated From Template',
                 'Description': 'This Task was generated automatically!',
                 'DownloadSize': 9999,
                 'prefetch': 'prefetch file.txt',
@@ -48,9 +50,8 @@ delete /tmp/file.txt
 copy __Download/file.txt /tmp/file.txt
 """
                 }
-    print(template_dict)
+    #print(template_dict)
     print(generate_bes_from_template(template_dict))
-    print(fixlet_modification_time())
 
 # if called directly, then run this example:
 if __name__ == '__main__':

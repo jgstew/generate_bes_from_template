@@ -14,7 +14,7 @@
 		<SANSID></SANSID>
 		<MIMEField>
 			<Name>x-fixlet-modification-time</Name>
-			<Value>Tue, 03 Mar 2020 19:37:59 +0000</Value>
+			<Value>{{x-fixlet-modification-time}}</Value>
 		</MIMEField>
 		<Domain>BESC</Domain>
 		<DefaultAction ID="Action1">

@@ -42,8 +42,11 @@ def main():
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'Title': 'Example Generated From Template',
                 'Description': 'This Task was generated automatically!',
-                'Relevance': """ Comment: Always False */ FALSE ; \
-/* This example doesn't do anything, so it is always false. """,
+                'Relevances': [
+                    {'Relevance': """ Comment: Always False */ FALSE \
+/* This example doesn't do anything, so it is always false. """},
+                    {'Relevance': """ FALSE """}
+                ],
                 'DownloadSize': 9999,
                 'SourceID': 'JGStew',
                 'prefetch': 'prefetch file.txt',

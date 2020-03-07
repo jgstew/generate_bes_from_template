@@ -3,7 +3,9 @@
 	<{{TaskFixletType}}{{^TaskFixletType}}Task{{/TaskFixletType}}>
 		<Title>{{Title}}</Title>
 		<Description><![CDATA[ {{{Description}}} ]]></Description>
-		<Relevance><![CDATA[ /*{{{Relevance}}}*/ NOTHINGS ]]></Relevance>
+		{{#Relevances}}
+		<Relevance><![CDATA[{{{Relevance}}}]]></Relevance>
+		{{/Relevances}}
 		<Category></Category>
 		<DownloadSize>{{DownloadSize}}{{^DownloadSize}}0{{/DownloadSize}}</DownloadSize>
 		<Source>{{Source}}{{^Source}}Internal{{/Source}}</Source>

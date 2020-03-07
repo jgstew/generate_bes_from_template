@@ -40,9 +40,11 @@ def main():
     #from examples.task_example_data import template_dict
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
-                'title': 'Example Generated From Template',
+                'Title': 'Example Generated From Template',
                 'Description': 'This Task was generated automatically!',
+                'Relevance': """ Comment: Always False */ FALSE ; /* This example doesn't do anything, so it is always false. """,
                 'DownloadSize': 9999,
+                'SourceID': 'JGStew',
                 'prefetch': 'prefetch file.txt',
                 'action_script':
                 """

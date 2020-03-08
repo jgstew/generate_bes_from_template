@@ -130,3 +130,6 @@ dmypy.json
 
 # MacOS
 .DS_Store
+
+# Ignore private files (remove when moved to submodule)
+*_private.py

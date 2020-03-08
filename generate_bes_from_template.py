@@ -37,7 +37,8 @@ def fixlet_modification_time(date_to_format=datetime.datetime.now(datetime.timez
 def main():
     """Only called if this script is run directly"""
     # get python dictionary with example config items
-    #from examples.task_example_data import template_dict
+    #from task_example_data import template_dict
+    
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'Title': 'Example Generated From Template',

@@ -42,10 +42,10 @@ def main():
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'Title': 'Example Generated From Template',
                 'Description': 'This Task was generated automatically!',
-                'Relevances': [
+                'Relevance': [
                     {'Relevance': """ Comment: Always False */ FALSE \
 /* This example doesn't do anything, so it is always false. """},
-                    {'Relevance': """ FALSE """}
+                    {'Relevance': """ TRUE """}
                 ],
                 'DownloadSize': 9999,
                 'SourceID': 'JGStew',

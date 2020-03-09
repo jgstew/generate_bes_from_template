@@ -1,6 +1,6 @@
 #!/usr/local/python
 """
-generate-bes-from-template.py
+generate_bes_from_template.py
 
 Created by James Stewart (@JGStew) on 2020-03-03.
 """
@@ -38,7 +38,7 @@ def main():
     """Only called if this script is run directly"""
     # get python dictionary with example config items
     #from task_example_data import template_dict
-    
+
     template_dict = {
                 'template_file_path': 'examples/TEMPLATE_TASK.bes',
                 'Title': 'Example Generated From Template',
@@ -51,7 +51,7 @@ def main():
                 'DownloadSize': 9999,
                 'SourceID': 'JGStew',
                 'prefetch': 'prefetch file.txt',
-                'action_script':
+                'ActionScript':
                 """
 delete /tmp/file.txt
 copy __Download/file.txt /tmp/file.txt

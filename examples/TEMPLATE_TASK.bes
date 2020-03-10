@@ -29,13 +29,10 @@
 				<PostLink> to deploy this action.</PostLink>
 			</Description>
 			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell">
-// Change Mustache Token: {{=//{{ }}//=}}
+{{{prefetch}}}
 
-//{{prefetch}}//
-
-//{{ActionScript}}//
-
-// Revert Mustache Token: //{{={{ }}=}}//</ActionScript>
+{{{ActionScript}}}
+</ActionScript>
 		</DefaultAction>
 	</{{TypeTaskOrFixlet}}{{^TypeTaskOrFixlet}}Task{{/TypeTaskOrFixlet}}>
 </BES>

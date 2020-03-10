@@ -21,6 +21,9 @@ def generate_bes_from_template(template_dict):
             template_dict['SourceReleaseDate'] = yyyymmdd()
         if not 'x-fixlet-modification-time' in template_dict:
             template_dict['x-fixlet-modification-time'] = fixlet_modification_time()
+        if not 'DownloadSize' in template_dict and 'prefetch' in template_dict:
+            # the following assumes if DownloadSize is not provided, then exactly 1 prefetch will be
+            template_dict['DownloadSize'] = template_dict['prefetch'].split("size",1)[1].split(" ",1)[0][1:]
         # run render of template, return result:
         return pystache.Renderer().render_path(file_path, template_dict)
     return "ERROR: No Template File Found!"

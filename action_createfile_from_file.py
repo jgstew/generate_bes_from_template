@@ -33,7 +33,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
         template_dict['file_path_destination'] = file_path_destination
 
     # default token for end of file if not included
-    if not 'token_end_of_file' in template_dict:
+    if 'token_end_of_file' not in template_dict:
         template_dict['token_end_of_file'] = '_END_OF_FILE_'
 
     # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python

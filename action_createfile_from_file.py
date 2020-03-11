@@ -6,9 +6,9 @@ Created by James Stewart (@JGStew) on 2020-03-11.
 """
 from __future__ import absolute_import
 
-import os
+#import os
 
-import pystache
+#import pystache
 
 def action_createfile_from_file(file_path, file_path_destination=None):
     """Read text file, turn into BigFix Action CreateFile Commnad"""
@@ -27,6 +27,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
 
 def main():
     """Only called if this script is run directly"""
+    # use this script itself as the demo createfile
     print(action_createfile_from_file("action_createfile_from_file.py"))
 
 # if called directly, then run this example:

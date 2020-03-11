@@ -13,7 +13,7 @@ from __future__ import absolute_import
 
 import pystache
 
-pystache_template_createfile = """\
+PYSTACHE_TEMPLATE_CREATEFILE = """\
 delete __createfile
 
 createfile until _END_OF_FILE_
@@ -31,16 +31,16 @@ def action_createfile_from_file(file_path, file_path_destination=None):
         template_dict['file_path_destination'] = file_path
     else:
         template_dict['file_path_destination'] = file_path_destination
-    # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python
 
-    #file_contents = ""
+    # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python
     try:
         with open(file_path, "rt") as file_read:
+            # need to escape `{` for BigFix CreateFile command
             template_dict['file_contents'] = file_read.read().replace('{', '{{')
     except UnicodeDecodeError:
         return "ERROR: UnicodeDecodeError - bad file"
 
-    return pystache.render(pystache_template_createfile, template_dict)
+    return pystache.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
 
 def main():
     """Only called if this script is run directly"""

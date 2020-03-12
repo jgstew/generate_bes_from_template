@@ -22,7 +22,8 @@ def generate_bes_from_template(template_dict):
             template_dict['SourceReleaseDate'] = yyyymmdd()
         if 'x-fixlet-modification-time' not in template_dict:
             template_dict['x-fixlet-modification-time'] = fixlet_modification_time()
-        if 'DownloadSize' not in template_dict and 'prefetch' in template_dict and 'size' in template_dict['prefetch']:
+        if 'DownloadSize' not in template_dict and 'prefetch' in template_dict and \
+                'size' in template_dict['prefetch']:
             # the following assumes if DownloadSize is not provided, then exactly 1 prefetch will be
             #  NOTE: this could sum the size of multiple prefetch statements if an array is given
             #  WARNING: this is a bit fragile. You may need to specify DownloadSize to bypass this

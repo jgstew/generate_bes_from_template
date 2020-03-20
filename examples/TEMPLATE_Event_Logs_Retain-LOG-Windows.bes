@@ -25,7 +25,7 @@
 				<PostLink> to deploy this action.</PostLink>
 			</Description>
 			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell"><![CDATA[
-prefetch LGPO.zip sha1:0c74dac83aed569607aaa6df152206c709eef769 size:815660 https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip sha256:6ffb6416366652993c992280e29faea3507b5b5aa661c33ba1af31f48acea9c4
+{{{prefetch}}}
 
 // Add LGPO.zip to the client utility cache
 utility __Download\LGPO.zip

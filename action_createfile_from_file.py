@@ -16,9 +16,11 @@ import pystache
 PYSTACHE_TEMPLATE_CREATEFILE = """\
 delete __createfile
 
+// --- START of contents of {{{file_name}}} ------------
 createfile until {{{token_end_of_file}}}
 {{{file_contents}}}
 {{{token_end_of_file}}}
+// --- END of contents of {{{file_name}}} ------------
 
 delete "{{{file_path_destination}}}"
 copy __createfile "{{{file_path_destination}}}"
@@ -36,6 +38,9 @@ def action_createfile_from_file(file_path, file_path_destination=None):
     if 'token_end_of_file' not in template_dict:
         template_dict['token_end_of_file'] = '_END_OF_FILE_'
 
+    if 'file_name' not in template_dict:
+        template_dict['file_name'] = get_filename_from_pathname( template_dict['file_path_destination'] )
+
     # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python
     try:
         with open(file_path, "rt") as file_read:
@@ -49,6 +54,10 @@ def action_createfile_from_file(file_path, file_path_destination=None):
         template_dict['token_end_of_file'] = "_" + template_dict['token_end_of_file'] + "_"
 
     return pystache.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
+
+def get_filename_from_pathname(pathname):
+    # https://github.com/jgstew/tools/blob/master/Python/get_filename_from_pathname.py
+    return pathname.replace('\\','/').replace('}','/').split('/')[-1]
 
 def main():
     """Only called if this script is run directly"""

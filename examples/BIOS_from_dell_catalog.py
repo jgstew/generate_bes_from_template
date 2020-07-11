@@ -7,7 +7,6 @@ import sys
 # add parent directory(s) to path search for python modules
 sys.path.append('../')
 sys.path.append('../../')
-sys.path.append('../../../')
 
 
 from bigfix_prefetch.prefetch_from_dictionary import *
@@ -38,7 +37,14 @@ def main():
         prefetch_dictionary_result = {'file_name': 'Latitude_5495_1.3.4.exe', 'file_size': 6154960, 'file_sha1': '3896f19d84c39d81af9db447043e2b048ab286f0', 'file_sha256': 'ab1ce685ba9c5162fadffca2f2e1d654f4b045334793446d6b1c91c0e62eea23', 'file_md5': '488d59fdd41345213f082bddbcad0be1', 'download_url': 'http://downloads.dell.com/FOLDER06217780M/1/Latitude_5495_1.3.4.exe'}
         print(prefetch_dictionary_result)
 
-        # TODO: Compare Size & MD5 result
+        # Check file size matches:
+        if int(prefetch_dictionary_result['file_size']) != int(elem.attrib['size']):
+            print("ERROR: file size from download doesn't match catalog")
+            break
+        # Check md5 hash matches:
+        if prefetch_dictionary_result['file_md5'] != elem.attrib['hashMD5']:
+            print("ERROR: file md5 hash from download doesn't match catalog")
+            break
 
 
         template_dict = {

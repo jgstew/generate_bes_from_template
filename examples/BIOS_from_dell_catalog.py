@@ -59,7 +59,7 @@ def main():
         template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_Dell_BIOS_Update.log"'
         print(template_dict)
         #print( generate_bes_from_template(template_dict) )
-        with open("BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
+        with open("examples/build/BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
             filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
 
 

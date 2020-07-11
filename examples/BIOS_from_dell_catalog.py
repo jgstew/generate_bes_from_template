@@ -39,11 +39,11 @@ def main():
         # Check file size matches:
         if int(prefetch_dictionary_result['file_size']) != int(elem.attrib['size']):
             print("ERROR: file size from download doesn't match catalog")
-            break
+            #break
         # Check md5 hash matches:
         if prefetch_dictionary_result['file_md5'] != elem.attrib['hashMD5']:
             print("ERROR: file md5 hash from download doesn't match catalog")
-            break
+            #break
 
         template_dict = {
             'template_file_path': 'examples/TEMPLATE_BIOS_Update.bes',
@@ -59,9 +59,12 @@ def main():
         # Read the model from the catalog. There can be more than 1 model per BIOS update
         for model_elem in elem.findall("./SupportedSystems/Brand"):
             print(model_elem.findtext("./Display") + " " + model_elem.findtext("./Model/Display"))
-            template_dict['model'] = (model_elem.findtext("./Display") + " " + model_elem.findtext("./Model/Display")).split("/", 1)[0]
-            with open("examples/build/BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
-                filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
+            # TODO: probably need to make one task for every side of the split on /
+            models = model_elem.findtext("./Model/Display").split("/")
+            for model in models:
+                template_dict['model'] = model_elem.findtext("./Display") + " " + model
+                with open("examples/build/BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
+                    filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
 
         count += 1
     print(count)

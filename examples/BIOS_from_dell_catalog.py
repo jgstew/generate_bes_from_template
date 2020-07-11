@@ -3,16 +3,19 @@
 import xml.etree.ElementTree as ElementTree
 import datetime
 
-import url_to_prefetch
-import prefetch_from_dictionary
-
 import sys
 # add parent directory(s) to path search for python modules
 sys.path.append('../')
 sys.path.append('../../')
+sys.path.append('../../../')
+
+
+from bigfix_prefetch.prefetch_from_dictionary import *
+
+#import bigfix_prefetch.url_to_prefetch
 
 # https://github.com/jgstew/generate_bes_from_template
-from generate_bes_from_template.generate_bes_from_template import *
+from generate_bes_from_template import generate_bes_from_template
 
 
 def main():
@@ -46,12 +49,12 @@ def main():
                 'DownloadSize': elem.attrib['size'],
                 'SourceReleaseDate': datetime.datetime.strptime( elem.attrib['releaseDate'] , '%b %d, %Y').strftime('%Y-%m-%d')
         }
-        template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary.prefetch_from_dictionary(prefetch_dictionary_result)
+        template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary(prefetch_dictionary_result)
         template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_Dell_BIOS_Update.log"'
         print(template_dict)
         #print( generate_bes_from_template(template_dict) )
         with open("BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
-            filetowrite.write(generate_bes_from_template(template_dict))
+            filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
 
         
         count+=1

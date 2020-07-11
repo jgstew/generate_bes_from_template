@@ -42,7 +42,7 @@ def main():
 
 
         template_dict = {
-            'template_file_path': 'TEMPLATE_BIOS_Update.bes',
+            'template_file_path': 'examples/TEMPLATE_BIOS_Update.bes',
             'vendor': 'Dell',
             'model': 'Latitude 5495',
             'bios_version': elem.attrib['vendorVersion'],

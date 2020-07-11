@@ -39,7 +39,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
         template_dict['token_end_of_file'] = '_END_OF_FILE_'
 
     if 'file_name' not in template_dict:
-        template_dict['file_name'] = get_filename_from_pathname( template_dict['file_path_destination'] )
+        template_dict['file_name'] = get_filename_from_pathname(template_dict['file_path_destination'])
 
     # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python
     try:
@@ -57,7 +57,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
 
 def get_filename_from_pathname(pathname):
     # https://github.com/jgstew/tools/blob/master/Python/get_filename_from_pathname.py
-    return pathname.replace('\\','/').replace('}','/').split('/')[-1]
+    return pathname.replace('\\', '/').replace('}', '/').split('/')[-1]
 
 def main():
     """Only called if this script is run directly"""

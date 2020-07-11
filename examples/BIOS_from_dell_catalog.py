@@ -1,5 +1,4 @@
 
-
 import xml.etree.ElementTree as ElementTree
 import datetime
 
@@ -30,8 +29,8 @@ def main():
         print(elem.attrib['hashMD5'])
         print("http://downloads.dell.com/" + elem.attrib['path'])
         #print(elem.attrib['releaseDate'])
-        print(datetime.datetime.strptime(elem.attrib['releaseDate'], '%b %d, %Y').strftime('%Y-%m-%d'))
-
+        # https://stackoverflow.com/a/32621106/861745
+        print(datetime.datetime.strptime(elem.attrib['releaseDate'], '%B %d, %Y').strftime('%Y-%m-%d'))
 
         #prefetch_dictionary_result = url_to_prefetch.url_to_prefetch( "http://downloads.dell.com/" + elem.attrib['path'] , True )
         prefetch_dictionary_result = {'file_name': 'Latitude_5495_1.3.4.exe', 'file_size': 6154960, 'file_sha1': '3896f19d84c39d81af9db447043e2b048ab286f0', 'file_sha256': 'ab1ce685ba9c5162fadffca2f2e1d654f4b045334793446d6b1c91c0e62eea23', 'file_md5': '488d59fdd41345213f082bddbcad0be1', 'download_url': 'http://downloads.dell.com/FOLDER06217780M/1/Latitude_5495_1.3.4.exe'}
@@ -46,27 +45,26 @@ def main():
             print("ERROR: file md5 hash from download doesn't match catalog")
             break
 
-
         template_dict = {
             'template_file_path': 'examples/TEMPLATE_BIOS_Update.bes',
             'vendor': 'Dell',
-            'model': 'Latitude 5495',
             'bios_version': elem.attrib['vendorVersion'],
             'DownloadSize': elem.attrib['size'],
-            'SourceReleaseDate': datetime.datetime.strptime(elem.attrib['releaseDate'], '%b %d, %Y').strftime('%Y-%m-%d')
+            'SourceReleaseDate': datetime.datetime.strptime(elem.attrib['releaseDate'], '%B %d, %Y').strftime('%Y-%m-%d')
         }
         template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary(prefetch_dictionary_result)
         template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_Dell_BIOS_Update.log"'
         print(template_dict)
-        #print( generate_bes_from_template(template_dict) )
-        with open("examples/build/BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
-            filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
 
+        # Read the model from the catalog. There can be more than 1 model per BIOS update
+        for model_elem in elem.findall("./SupportedSystems/Brand"):
+            print(model_elem.findtext("./Display") + " " + model_elem.findtext("./Model/Display"))
+            template_dict['model'] = (model_elem.findtext("./Display") + " " + model_elem.findtext("./Model/Display")).split("/", 1)[0]
+            with open("examples/build/BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
+                filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
 
         count += 1
-        break
-
-    #print(count)
+    print(count)
 
 
 # if called directly, then run this example:

@@ -56,6 +56,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
     return pystache.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
 
 def get_filename_from_pathname(pathname):
+    """splits the filename from end of string after path separators including }"""
     # https://github.com/jgstew/tools/blob/master/Python/get_filename_from_pathname.py
     return pathname.replace('\\', '/').replace('}', '/').split('/')[-1]
 

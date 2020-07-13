@@ -48,6 +48,7 @@ def main():
         template_dict = {
             'template_file_path': 'examples/TEMPLATE_BIOS_Update.bes',
             'vendor': 'Dell',
+            'DellBIOS': True,
             'bios_version': elem.attrib['vendorVersion'],
             'DownloadSize': elem.attrib['size'],
             'SourceReleaseDate': datetime.datetime.strptime(elem.attrib['releaseDate'], '%B %d, %Y').strftime('%Y-%m-%d')

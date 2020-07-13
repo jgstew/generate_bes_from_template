@@ -53,7 +53,7 @@ def main():
             'SourceReleaseDate': datetime.datetime.strptime(elem.attrib['releaseDate'], '%B %d, %Y').strftime('%Y-%m-%d')
         }
         template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary(prefetch_dictionary_result)
-        template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_Dell_BIOS_Update.log"'
+        template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s{( (" /p=" & it) whose(length of it > 7) of (it as trimmed string) of (parameter "BIOS_Password" | "") | "" )} /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_BIOS_Update.log"'
 
         bios_dependency = elem.find("./SupportedDevices/Device/Dependency[@componentType='BIOS']")
         if bios_dependency:

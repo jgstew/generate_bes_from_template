@@ -1,0 +1,12 @@
+
+#  This is an example template for BES_CONFIG.py
+#  This should be edited to contain the real values to be used
+#  This file is in .gitignore for this repo to prevent changes being pushed 
+
+BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
+BES_ROOT_SERVER_PORT = "52311"
+BES_USER_NAME = "BES_USER_NAME"
+BES_PASSWORD = "BES_PASSWORD"
+BES_CUSTOM_SITE = "JamesTesting"
+BES_DEBUGGING = "testing"
+BES_INSTALLERS_LOCATION = "C:\temp"

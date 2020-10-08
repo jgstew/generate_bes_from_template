@@ -3,20 +3,20 @@
 #
 #
 
-BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
-BES_ROOT_SERVER_PORT = "52311"
-BES_USER_NAME = "BES_USER_NAME"
-BES_PASSWORD = "BES_PASSWORD"
-BES_CUSTOM_SITE = "JamesTesting"
-BES_DEBUGGING = "testing"
-BES_INSTALLERS_LOCATION = "C:\temp"
-
 #prevent *.pyc creation:   http://stackoverflow.com/questions/154443/how-to-avoid-pyc-files
 #import sys
 #sys.dont_write_bytecode = True
 
 from BES_CONFIG import *
-from bes_file_utilities import *
+    """ Example:
+    BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
+    BES_ROOT_SERVER_PORT = "52311"
+    BES_USER_NAME = "BES_USER_NAME"
+    BES_PASSWORD = "BES_PASSWORD"
+    BES_CUSTOM_SITE = "JamesTesting"
+    BES_DEBUGGING = "testing"
+    BES_INSTALLERS_LOCATION = "C:\temp"
+    """
 
 #from msilib import *
 def GetMsiProperty(path ,property):
@@ -321,10 +321,16 @@ def ProcessMultipleMSIs(path):
             
     return file_paths_msi_filtered
 
+# NOTE: there is a more efficient way to get the output of 2 hashes for the same file at once
 def GetSHA1(file_path):
     import os
     import hashlib
     return str( hashlib.sha1( open(file_path, "rb").read() ).hexdigest() )
+
+def GetSHA256(file_path):
+    import os
+    import hashlib
+    return str( hashlib.sha256( open(file_path, "rb").read() ).hexdigest() )
     
 if __name__ == "__main__":
     print BES_INSTALLERS_LOCATION

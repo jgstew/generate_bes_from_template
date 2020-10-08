@@ -1,22 +1,28 @@
-#
-#  Written by James Stewart   -   james@jgstew.com
-#
-#
+"""
+MSI_to_BES.py
+
+This script takes a folder of MSI installers and generates BigFix Tasks to Install and Uninstall
+
+Written by James Stewart   -   james@jgstew.com
+Started 2014
+
+"""
+
 
 #prevent *.pyc creation:   http://stackoverflow.com/questions/154443/how-to-avoid-pyc-files
 #import sys
 #sys.dont_write_bytecode = True
 
 from BES_CONFIG import *
-    """ Example:
-    BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
-    BES_ROOT_SERVER_PORT = "52311"
-    BES_USER_NAME = "BES_USER_NAME"
-    BES_PASSWORD = "BES_PASSWORD"
-    BES_CUSTOM_SITE = "JamesTesting"
-    BES_DEBUGGING = "testing"
-    BES_INSTALLERS_LOCATION = "C:\temp"
-    """
+""" Example:
+BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"
+BES_ROOT_SERVER_PORT = "52311"
+BES_USER_NAME = "BES_USER_NAME"
+BES_PASSWORD = "BES_PASSWORD"
+BES_CUSTOM_SITE = "JamesTesting"
+BES_DEBUGGING = "testing"
+BES_INSTALLERS_LOCATION = "C:\temp"
+"""
 
 #from msilib import *
 def GetMsiProperty(path ,property):

@@ -160,13 +160,12 @@ def BesImportBesFile(file_path):
         
     try:
         return urllib2.urlopen(request)
-            
     except urllib2.HTTPError, error:
         print ("HTTPError: [%s] %s" % (error.code, error.read()))
         sys.exit(1)
-    except urllib2.URLError, error:
-        print ("URLError: %s" % (error.args))
-        sys.exit(1)
+#    except urllib2.URLError, error:
+#        print ("URLError: %s" % (error.args))
+#        sys.exit(1)
             
 
 def BesUploadFile(file_path):

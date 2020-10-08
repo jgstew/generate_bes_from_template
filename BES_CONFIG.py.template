@@ -1,6 +1,6 @@
 
 #  This is an example template for BES_CONFIG.py
-#  This should be edited to contain the real values to be used
+#  This should be renamed to BES_CONFIG.py and edited to contain the real values to be used
 #  This file is in .gitignore for this repo to prevent changes being pushed 
 
 BES_ROOT_SERVER_DNS  = "BESroot.DOMAIN.TLD"

@@ -12,7 +12,7 @@ from __future__ import absolute_import
 # import os
 
 # import pystache
-import chevron as pystache
+import chevron
 
 PYSTACHE_TEMPLATE_CREATEFILE = """\
 delete __createfile
@@ -54,7 +54,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
     while template_dict['token_end_of_file'] in template_dict['file_contents']:
         template_dict['token_end_of_file'] = "_" + template_dict['token_end_of_file'] + "_"
 
-    return pystache.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
+    return chevron.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
 
 def get_filename_from_pathname(pathname):
     """splits the filename from end of string after path separators including }"""

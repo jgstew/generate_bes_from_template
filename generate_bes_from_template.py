@@ -11,8 +11,8 @@ import os
 import datetime
 import re
 
-import pystache
-# import chevron as pystache
+#import pystache
+import chevron
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
@@ -31,7 +31,8 @@ def generate_bes_from_template(template_dict):
             template_dict['DownloadSize'] = \
                 (re.search(r'size[=:](.*?)\s', template_dict['prefetch']).group(1))
         # run render of template, return result:
-        return pystache.Renderer().render_path(file_path, template_dict)
+        #return pystache.Renderer().render_path(file_path, template_dict)
+        return chevron.render(open(file_path, 'r'), template_dict)
     return "ERROR: No Template File Found!"
 
 def yyyymmdd(separator="-", date_to_format=datetime.datetime.today()):

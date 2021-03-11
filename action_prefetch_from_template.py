@@ -13,7 +13,7 @@ from __future__ import absolute_import
 # import os
 
 # import pystache
-import chevron as pystache
+import chevron
 
 PYSTACHE_TEMPLATE_PREFETCH_STATEMENT = """\
 prefetch {{{file_name_downloaded}}} sha1:{{{file_sha1}}} \
@@ -31,7 +31,7 @@ def action_prefetch_from_template(template_dict, \
     # force SHA1 & SHA256 to be lowercase
     # remove commas and decimals from file_size
     # get file_name_downloaded from URL if not included
-    return pystache.render(pystache_template, template_dict)
+    return chevron.render(pystache_template, template_dict)
 
 def main():
     """Only called if this script is run directly"""

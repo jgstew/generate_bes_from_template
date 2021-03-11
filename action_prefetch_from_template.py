@@ -10,9 +10,10 @@ Related:
 """
 from __future__ import absolute_import
 
-#import os
+# import os
 
-import pystache
+# import pystache
+import chevron as pystache
 
 PYSTACHE_TEMPLATE_PREFETCH_STATEMENT = """\
 prefetch {{{file_name_downloaded}}} sha1:{{{file_sha1}}} \

@@ -12,6 +12,7 @@ import datetime
 import re
 
 import pystache
+# import chevron as pystache
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""

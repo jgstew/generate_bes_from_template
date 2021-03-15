@@ -10,9 +10,9 @@ sys.path.append('../')
 sys.path.append('../../')
 
 
-from bigfix_prefetch.prefetch_from_dictionary import *
+from bigfix_prefetch.prefetch_from_dictionary import *  # noqa: F403
 
-from bigfix_prefetch.url_to_prefetch import *
+from bigfix_prefetch.url_to_prefetch import *  # noqa: F403
 
 # https://github.com/jgstew/generate_bes_from_template
 from generate_bes_from_template import generate_bes_from_template
@@ -53,7 +53,7 @@ def main():
 
         # skip failed downloads
         try:
-            prefetch_dictionary_result = url_to_prefetch("http://downloads.dell.com/" + elem.attrib['path'], True)
+            prefetch_dictionary_result = url_to_prefetch("http://downloads.dell.com/" + elem.attrib['path'], True)  # noqa: F405
         except urllib.error.HTTPError:
             continue
         #prefetch_dictionary_result = {'file_name': 'Latitude_5495_1.3.4.exe', 'file_size': 6154960, 'file_sha1': '3896f19d84c39d81af9db447043e2b048ab286f0', 'file_sha256': 'ab1ce685ba9c5162fadffca2f2e1d654f4b045334793446d6b1c91c0e62eea23', 'file_md5': '488d59fdd41345213f082bddbcad0be1', 'download_url': 'http://downloads.dell.com/FOLDER06217780M/1/Latitude_5495_1.3.4.exe'}
@@ -82,7 +82,7 @@ def main():
             'DownloadSize': elem.attrib['size'],
             'SourceReleaseDate': datetime.datetime.strptime(elem.attrib['releaseDate'], '%B %d, %Y').strftime('%Y-%m-%d')
         }
-        template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary.prefetch_from_dictionary(prefetch_dictionary_result)
+        template_dict['BIOS_Update_Prefetch'] = '\n' + prefetch_from_dictionary.prefetch_from_dictionary(prefetch_dictionary_result)  # noqa: F405
         template_dict['BIOS_Update_ActionScript'] = '\n' + 'waithidden __Download\\' + prefetch_dictionary_result['file_name'] + r' /s{( (" /p=" & it) whose(length of it > 7) of (it as trimmed string) of (parameter "BIOS_Password" | "") | "" )} /l="{ pathname of folder "__BESData\__Global\Logs" of parent folder of client }\install_BIOS_Update.log"'
 
         bios_dependency = elem.find("./SupportedDevices/Device/Dependency[@componentType='BIOS']")

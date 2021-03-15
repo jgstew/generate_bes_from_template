@@ -1,2 +1,5 @@
+[MASTER]
+ignore=MSI_to_BES.py
+
 [format]
 max-line-length = 101

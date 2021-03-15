@@ -53,7 +53,7 @@ def main():
 
         # skip failed downloads
         try:
-            prefetch_dictionary_result = url_to_prefetch( "http://downloads.dell.com/" + elem.attrib['path'] , True )
+            prefetch_dictionary_result = url_to_prefetch("http://downloads.dell.com/" + elem.attrib['path'], True)
         except urllib.error.HTTPError:
             continue
         #prefetch_dictionary_result = {'file_name': 'Latitude_5495_1.3.4.exe', 'file_size': 6154960, 'file_sha1': '3896f19d84c39d81af9db447043e2b048ab286f0', 'file_sha256': 'ab1ce685ba9c5162fadffca2f2e1d654f4b045334793446d6b1c91c0e62eea23', 'file_md5': '488d59fdd41345213f082bddbcad0be1', 'download_url': 'http://downloads.dell.com/FOLDER06217780M/1/Latitude_5495_1.3.4.exe'}
@@ -64,7 +64,7 @@ def main():
         print(elem.attrib['size'])
         print(elem.attrib['hashMD5'])
         print("http://downloads.dell.com/" + elem.attrib['path'])
-        
+
         # Check file size matches:
         if int(prefetch_dictionary_result['file_size']) != int(elem.attrib['size']):
             print("ERROR: file size from download doesn't match catalog")
@@ -96,8 +96,8 @@ def main():
             models = model_elem.findtext("./Model/Display").split("/")
             for model in models:
                 template_dict['model'] = model_elem.findtext("./Display") + " " + model
-                print(BUILD_DIRECTORY + "BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes")
-                with open(BUILD_DIRECTORY + "BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] +".bes", 'w') as filetowrite:
+                print(BUILD_DIRECTORY + "BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] + ".bes")
+                with open(BUILD_DIRECTORY + "BIOS_Update_" + template_dict['vendor'] + "_" + template_dict['model'] + "_" + template_dict['bios_version'] + ".bes", 'w') as filetowrite:
                     filetowrite.write(generate_bes_from_template.generate_bes_from_template(template_dict))
         count += 1
     print(count)

@@ -1,3 +1,7 @@
+"""
+This is an example python dictionary
+"""
+
 
 template_dict = {
     'template_file_path': 'examples/TEMPLATE_TASK.bes',

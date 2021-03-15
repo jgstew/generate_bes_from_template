@@ -12,7 +12,7 @@ import datetime
 import re
 
 #import pystache
-import chevron
+import chevron  # pylint: disable=import-error
 
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
@@ -39,7 +39,9 @@ def yyyymmdd(separator="-", date_to_format=datetime.datetime.today()):
     """By default, get YYYY-MM-DD of today in local time zone"""
     return date_to_format.strftime('%Y' + separator + '%m' + separator + '%d')
 
-def fixlet_modification_time(date_to_format=datetime.datetime.now(datetime.timezone.utc)):
+def fixlet_modification_time(
+        date_to_format=datetime.datetime.now(datetime.timezone.utc)
+    ):
     """By default, get the bigfix fixlet format of time of now in UTC
     Example: Tue, 03 Mar 2020 19:37:59 +0000"""
     return date_to_format.strftime('%a, %d %b %Y %H:%M:%S %z')

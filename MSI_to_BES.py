@@ -8,10 +8,11 @@ Started 2014
 
 """
 
-
-#prevent *.pyc creation:   http://stackoverflow.com/questions/154443/how-to-avoid-pyc-files
-#import sys
-#sys.dont_write_bytecode = True
+# pylint: skip-file
+# pylint: disable-all
+# prevent *.pyc creation:   http://stackoverflow.com/questions/154443/how-to-avoid-pyc-files
+# import sys
+# sys.dont_write_bytecode = True
 
 from BES_CONFIG import *
 """ Example:
@@ -24,6 +25,7 @@ BES_DEBUGGING = "testing"
 BES_INSTALLERS_LOCATION = "C:\temp"
 """
 
+
 #from msilib import *
 def GetMsiProperty(path ,property):
     # requires "from msilib import *"
@@ -34,12 +36,18 @@ def GetMsiProperty(path ,property):
     #print dir(result)
     return result.GetString(1)
 
+
 def BesRootUrl():
     return BES_ROOT_SERVER_DNS + ":" + BES_ROOT_SERVER_PORT
+
+
 def BesRootUploadsUrl(protocol="http://"):
     return protocol + BesRootUrl() + "/Uploads/"
+
+
 def BesRootApiUploadUrl():
     return "https://" + BesRootUrl() + "/api/upload"
+
 
 def GetMsiFilePathsFromFolder(path):
     import os
@@ -51,10 +59,12 @@ def GetMsiFilePathsFromFolder(path):
                 filepaths.append(os.path.join(root, file))
     return filepaths
 
+
 def GetNameVersionFromMsi(path):
     version = GetMsiProperty(path, "ProductVersion")
     name = GetMsiProperty(path, "ProductName")
     return (path,name,version)
+
 
 def GetInfoMultipleMsis(paths):
     msiinfo=[]
@@ -62,20 +72,25 @@ def GetInfoMultipleMsis(paths):
         msiinfo.append(BesCreateTask(path))
     return msiinfo
 
+
 def GetInstallTitleFromMSI(path):
     return GetTitleFromMSI(path)
+
 
 def GetTitleFromMSI(path, task_type = "Install"):
     return task_type + '- %s v%s' % (GetMsiProperty(path, "ProductName"),GetMsiProperty(path, "ProductVersion"))
 
+
 def GetInstallRelevanceFromMSI(path):
-    return 'not exists keys whose (value "DisplayName" of it as string starts with "%s" AND (value "DisplayVersion" of it as string as version) >= "%s" as version) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % (GetMsiProperty(path, "ProductName"),GetMsiProperty(path, "ProductVersion"))
+    return ('not exists keys whose (value "DisplayName" of it as string starts with "%s" AND (value "DisplayVersion" of it as string as version) >= "%s" as version) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % (GetMsiProperty(path, "ProductName"),GetMsiProperty(path, "ProductVersion")))
+
 
 def GetFileNameFromPath(path):
     # http://stackoverflow.com/questions/8384737/python-extract-file-name-from-path-no-matter-what-the-os-path-format
     import ntpath
     head, tail = ntpath.split(path)
     return tail or ntpath.basename(head)
+
 
 def GetActionScriptMSI(file_path, task_type = "Install"):
     if (task_type == "Uninstall"):
@@ -89,8 +104,10 @@ def GetRelevanceMSI(file_path, task_type = "Install"):
     else:
         return GetInstallRelevanceFromMSI(file_path)
 
+
 def GetComments(file_path, task_type = "Install"):
     return "\n// %s \n// Number of files in same directory: %s\n" % ( file_path, CountNumFilesInDir(file_path) )
+
 
 def GetSysTracerActionScript(snapshot_name):
     if (BES_DEBUGGING):
@@ -102,16 +119,20 @@ def GetSysTracerActionScript(snapshot_name):
     else:
         return ""
 
+
 def GetInstallActionScriptMSI(path):
     preinstall = GetSysTracerActionScript("PreInstall-"+GetMsiProperty(path, "ProductName"))
     postinstall = GetSysTracerActionScript("PostInstall-"+GetMsiProperty(path, "ProductName"))
     return GetPrefetchSingleFile(path) + '\n\n' + preinstall + 'wait msiexec /i "{(pathname of file "%s" of folder "__Download" of client folder of current site)}" /qn /norestart DESKTOP_SHORTCUTS=0 ALLUSERS=1\n\n%s' % (GetFileNameFromPath(path), postinstall)
 
+
 def GetUninstallActionScriptMSI(path):
     return 'wait msiexec /x "{unique value of names of keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)}" /qn /norestart' % (GetMsiProperty(path, "ProductName"))
 
+
 def GetUninstallRelevanceMSI(path):
     return 'exists keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % (GetMsiProperty(path, "ProductName"))
+
 
 def GetPrefetchSingleFile(path, url = "", file_name = ""):
     import os
@@ -127,6 +148,7 @@ def GetPrefetchSingleFile(path, url = "", file_name = ""):
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
     return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), urllib.quote(url, ":/"))
 
+
 def CountNumFilesInDir(path, file_type = "*"):
     # http://stackoverflow.com/questions/3883138/how-do-i-read-the-number-of-files-in-a-folder-using-python
     import os
@@ -134,6 +156,7 @@ def CountNumFilesInDir(path, file_type = "*"):
         path = os.path.dirname(path)
     # Counts the number of files in a directory - does a check to only count files and not directories within the directory
     return sum(os.path.isfile(os.path.join(path, f)) for f in os.listdir(path))
+
 
 def ListFilesInDir(path):
     import os
@@ -160,13 +183,13 @@ def BesImportBesFile(file_path):
         
     try:
         return urllib2.urlopen(request)
-    except urllib2.HTTPError, error:
+    except (urllib2.HTTPError,error):
         print ("HTTPError: [%s] %s" % (error.code, error.read()))
         sys.exit(1)
 #    except urllib2.URLError, error:
 #        print ("URLError: %s" % (error.args))
 #        sys.exit(1)
-            
+
 
 def BesUploadFile(file_path):
     # currently Requires Master Operator account
@@ -314,15 +337,15 @@ def writeFile(file_path, content):
 def ProcessMultipleMSIs(path):
     file_paths_msi = GetMsiFilePathsFromFolder(path)
     file_paths_msi_filtered = []
-    print file_paths_msi
+    print(file_paths_msi)
     #numfiles = []
     
     for file_path in file_paths_msi:
         if 1 == CountNumFilesInDir(file_path):
             file_paths_msi_filtered.append(file_path)
-            print BesImportBesFile( writeFile( file_path + "-Install.bes", BesCreateTask(file_path, "Install") ) )
-            print BesImportBesFile( writeFile( file_path + "-Uninstall.bes", BesCreateTask(file_path, "Uninstall") ) )
-            print BesUploadFile( file_path )
+            print(BesImportBesFile(writeFile(file_path + "-Install.bes", BesCreateTask(file_path, "Install"))))
+            print(BesImportBesFile(writeFile(file_path + "-Uninstall.bes", BesCreateTask(file_path, "Uninstall"))))
+            print(BesUploadFile(file_path))
             
     return file_paths_msi_filtered
 
@@ -336,14 +359,15 @@ def GetSHA256(file_path):
     import os
     import hashlib
     return str( hashlib.sha256( open(file_path, "rb").read() ).hexdigest() )
-    
+
+
 if __name__ == "__main__":
-    print BES_INSTALLERS_LOCATION
-    print CountNumFilesInDir(BES_INSTALLERS_LOCATION)
-    print GetMsiFilePathsFromFolder(BES_INSTALLERS_LOCATION)
+    print(BES_INSTALLERS_LOCATION)
+    print(CountNumFilesInDir(BES_INSTALLERS_LOCATION))
+    print(GetMsiFilePathsFromFolder(BES_INSTALLERS_LOCATION))
     #print str( GetSHA1("P:\Packagers\James\ITDSDP\Sybase\Sybase.MSI") )
     #print GetInstallActionScriptMSI("C:\Users\jgstew\Downloads\INSSIDER\inSSIDer-installer-3.0.7.48.msi")
-    print ProcessMultipleMSIs(BES_INSTALLERS_LOCATION)
+    print(ProcessMultipleMSIs(BES_INSTALLERS_LOCATION))
     #print BesUploadFile("P:\Packagers\James\CoseSDP\Majiq\MajiqWindowsShortcut.msi")
     #print GetInfoMultipleMsis(GetMsiFilePathsFromFolder("C:\Users\jgstew\Downloads"))
     #print BesCreateTask("C:\Users\jgstew\Downloads\inSSIDer-installer-3.0.7.48.msi")

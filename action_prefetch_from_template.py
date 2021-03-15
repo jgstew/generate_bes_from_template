@@ -13,7 +13,7 @@ from __future__ import absolute_import
 # import os
 
 # import pystache
-import chevron
+import chevron  # pylint: disable=import-error
 
 PYSTACHE_TEMPLATE_PREFETCH_STATEMENT = """\
 prefetch {{{file_name_downloaded}}} sha1:{{{file_sha1}}} \
@@ -27,7 +27,10 @@ size={{{file_size}}} url={{{download_url}}} sha256={{{file_sha256}}}\
 
 def action_prefetch_from_template(template_dict, \
                 pystache_template=PYSTACHE_TEMPLATE_PREFETCH_STATEMENT):
-    """returns a prefetch in a particular format based upon which template is passed in"""
+    """
+    returns a prefetch in a particular format based upon
+     which template is passed in
+    """
     # force SHA1 & SHA256 to be lowercase
     # remove commas and decimals from file_size
     # get file_name_downloaded from URL if not included
@@ -45,7 +48,10 @@ def main():
                 'file_sha256': '6ffb6416366652993c992280e29faea3507b5b5aa661c33ba1af31f48acea9c4'
                 }
     print(action_prefetch_from_template(template_dict))
-    print(action_prefetch_from_template(template_dict, PYSTACHE_TEMPLATE_PREFETCH_BLOCK_ITEM))
+    print(action_prefetch_from_template(
+        template_dict,
+        PYSTACHE_TEMPLATE_PREFETCH_BLOCK_ITEM
+    ))
 
 # if called directly, then run this example:
 if __name__ == '__main__':

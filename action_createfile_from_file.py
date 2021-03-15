@@ -12,7 +12,7 @@ from __future__ import absolute_import
 # import os
 
 # import pystache
-import chevron
+import chevron  # pylint: disable=import-error
 
 PYSTACHE_TEMPLATE_CREATEFILE = """\
 delete __createfile
@@ -52,7 +52,9 @@ def action_createfile_from_file(file_path, file_path_destination=None):
 
     # make sure file contents does not contain END_OF_FILE token
     while template_dict['token_end_of_file'] in template_dict['file_contents']:
-        template_dict['token_end_of_file'] = "_" + template_dict['token_end_of_file'] + "_"
+        template_dict['token_end_of_file'] = (
+            "_" + template_dict['token_end_of_file'] + "_"
+        )
 
     return chevron.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
 

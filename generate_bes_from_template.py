@@ -14,6 +14,7 @@ import re
 #import pystache
 import chevron  # pylint: disable=import-error
 
+
 def generate_bes_from_template(template_dict):
     """Generate BES XML file from info in template_dict hash table"""
     file_path = template_dict['template_file_path']
@@ -35,16 +36,19 @@ def generate_bes_from_template(template_dict):
         return chevron.render(open(file_path, 'r'), template_dict)
     return "ERROR: No Template File Found!"
 
+
 def yyyymmdd(separator="-", date_to_format=datetime.datetime.today()):
     """By default, get YYYY-MM-DD of today in local time zone"""
     return date_to_format.strftime('%Y' + separator + '%m' + separator + '%d')
 
+
 def fixlet_modification_time(
         date_to_format=datetime.datetime.now(datetime.timezone.utc)
-    ):
+):
     """By default, get the bigfix fixlet format of time of now in UTC
     Example: Tue, 03 Mar 2020 19:37:59 +0000"""
     return date_to_format.strftime('%a, %d %b %Y %H:%M:%S %z')
+
 
 def main():
     """Only called if this script is run directly"""
@@ -52,25 +56,26 @@ def main():
     #from task_example_data import template_dict
 
     template_dict = {
-                'template_file_path': 'examples/TEMPLATE_TASK.bes',
-                'Title': 'Example Generated From Template',
-                'Description': 'This Task was generated automatically!',
-                'Relevance': [
-                    {'Relevance': """ Comment: Always False */ FALSE \
+        'template_file_path': 'examples/TEMPLATE_TASK.bes',
+        'Title': 'Example Generated From Template',
+        'Description': 'This Task was generated automatically!',
+        'Relevance': [
+            {'Relevance': """ Comment: Always False */ FALSE \
 /* This example doesn't do anything, so it is always false. """},
-                    {'Relevance': """ TRUE """}
-                ],
-                'DownloadSize': 9999,
-                'SourceID': 'JGStew',
-                'prefetch': 'prefetch file.txt',
-                'ActionScript':
-                """
+            {'Relevance': """ TRUE """}
+        ],
+        'DownloadSize': 9999,
+        'SourceID': 'JGStew',
+        'prefetch': 'prefetch file.txt',
+        'ActionScript':
+            """
 delete /tmp/file.txt
 copy __Download/file.txt /tmp/file.txt
 """
-                }
+    }
     #print(template_dict)
     print(generate_bes_from_template(template_dict))
+
 
 # if called directly, then run this example:
 if __name__ == '__main__':

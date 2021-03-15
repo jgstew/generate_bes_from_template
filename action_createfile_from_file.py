@@ -27,6 +27,7 @@ delete "{{{file_path_destination}}}"
 copy __createfile "{{{file_path_destination}}}"
 """
 
+
 def action_createfile_from_file(file_path, file_path_destination=None):
     """Read text file, turn into BigFix Action CreateFile Commnad"""
     template_dict = {}
@@ -40,7 +41,7 @@ def action_createfile_from_file(file_path, file_path_destination=None):
         template_dict['token_end_of_file'] = '_END_OF_FILE_'
 
     if 'file_name' not in template_dict:
-        template_dict['file_name'] = get_filename_from_pathname(template_dict['file_path_destination']) # pylint: disable=line-too-long
+        template_dict['file_name'] = get_filename_from_pathname(template_dict['file_path_destination'])  # pylint: disable=line-too-long
 
     # https://stackoverflow.com/questions/898669/how-can-i-detect-if-a-file-is-binary-non-text-in-python
     try:
@@ -58,15 +59,18 @@ def action_createfile_from_file(file_path, file_path_destination=None):
 
     return chevron.render(PYSTACHE_TEMPLATE_CREATEFILE, template_dict)
 
+
 def get_filename_from_pathname(pathname):
     """splits the filename from end of string after path separators including }"""
     # https://github.com/jgstew/tools/blob/master/Python/get_filename_from_pathname.py
     return pathname.replace('\\', '/').replace('}', '/').split('/')[-1]
 
+
 def main():
     """Only called if this script is run directly"""
     # use this script itself as the demo createfile
     print(action_createfile_from_file("action_createfile_from_file.py"))
+
 
 # if called directly, then run this example:
 if __name__ == '__main__':

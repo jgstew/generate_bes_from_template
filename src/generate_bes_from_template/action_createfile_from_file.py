@@ -9,7 +9,7 @@ Related:
 """
 from __future__ import absolute_import
 
-# import os
+import os.path
 
 # import pystache
 import chevron  # pylint: disable=import-error
@@ -69,7 +69,7 @@ def get_filename_from_pathname(pathname):
 def main():
     """Only called if this script is run directly"""
     # use this script itself as the demo createfile
-    print(action_createfile_from_file("action_createfile_from_file.py"))
+    print(action_createfile_from_file(os.path.abspath(__file__)))
 
 
 # if called directly, then run this example:

@@ -52,11 +52,13 @@ def fixlet_modification_time(
 
 def main():
     """Only called if this script is run directly"""
-    # get python dictionary with example config items
-    #from task_example_data import template_dict
-
+    
+    # get template file relative to this script
+    template_file_path = (
+        os.path.join(os.path.dirname(os.path.abspath(__file__)), "TEMPLATE_TASK.bes.mustache")
+    )
     template_dict = {
-        'template_file_path': 'examples/TEMPLATE_TASK.bes',
+        'template_file_path': template_file_path,
         'Title': 'Example Generated From Template',
         'Description': 'This Task was generated automatically!',
         'Relevance': [

@@ -28,6 +28,8 @@ from generate_bes_from_template import *
 
 tests_count = 0  # pylint: disable=invalid-name
 
+print(action_prefetch_from_template.__file__)
+
 # make sure we are testing the right place:
 if args.test_pip:
     # this will false positive on windows

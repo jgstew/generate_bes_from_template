@@ -26,8 +26,10 @@ size={{{file_size}}} url={{{download_url}}} sha256={{{file_sha256}}}\
 """
 
 
-def action_prefetch_from_template(template_dict,
-        pystache_template=PYSTACHE_TEMPLATE_PREFETCH_STATEMENT):  # pylint: disable=bad-continuation
+def action_prefetch_from_template(
+        template_dict,
+        pystache_template=PYSTACHE_TEMPLATE_PREFETCH_STATEMENT,
+):
     """
     returns a prefetch in a particular format based upon
      which template is passed in

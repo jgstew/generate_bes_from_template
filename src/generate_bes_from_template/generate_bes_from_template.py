@@ -52,7 +52,7 @@ def fixlet_modification_time(
 
 def main():
     """Only called if this script is run directly"""
-    
+
     # get template file relative to this script
     template_file_path = (
         os.path.join(os.path.dirname(os.path.abspath(__file__)), "TEMPLATE_TASK.bes.mustache")

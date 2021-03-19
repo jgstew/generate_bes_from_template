@@ -26,10 +26,13 @@ if not args.test_pip:
 
 from generate_bes_from_template import *
 
+tests_count = 0  # pylint: disable=invalid-name
+
 # pylint: disable=line-too-long
 assert str(action_prefetch_from_template.main()) == (
     "prefetch LGPO.zip sha1:0c74dac83aed569607aaa6df152206c709eef769 size:815660 https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip sha256:6ffb6416366652993c992280e29faea3507b5b5aa661c33ba1af31f48acea9c4"
 )
+tests_count += 1
 assert str(generate_bes_from_template.main()).startswith(
     """<?xml version="1.0" encoding="UTF-8"?>
 <BES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BES.xsd">
@@ -44,6 +47,7 @@ assert str(generate_bes_from_template.main()).startswith(
 		<SourceID><![CDATA[JGStew]]></SourceID>
 """
 )
+tests_count += 1
 assert str(action_createfile_from_file.main()).startswith(
     """delete __createfile
 
@@ -52,3 +56,11 @@ createfile until __END_OF_FILE__
 #!/usr/local/python
 """
 )
+tests_count += 1
+
+
+# tests pass, return 0:
+print("-------------------------------------")
+print("Success: %d Tests pass" % tests_count)
+print("")
+sys.exit(0)

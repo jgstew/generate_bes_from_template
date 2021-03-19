@@ -19,3 +19,6 @@ exclude =
     .git
     __pycache__
     MSI_to_BES.py
+
+per-file-ignores =
+    tests.py: F403,F405,W191,E101

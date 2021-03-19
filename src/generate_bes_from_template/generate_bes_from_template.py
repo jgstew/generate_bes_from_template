@@ -76,7 +76,9 @@ copy __Download/file.txt /tmp/file.txt
 """
     }
     #print(template_dict)
-    print(generate_bes_from_template(template_dict))
+    output_string = generate_bes_from_template(template_dict)
+    print(output_string)
+    return output_string
 
 
 # if called directly, then run this example:

@@ -51,11 +51,13 @@ def main():
         'file_sha1': '0c74dac83aed569607aaa6df152206c709eef769',
         'file_sha256': '6ffb6416366652993c992280e29faea3507b5b5aa661c33ba1af31f48acea9c4'
     }
-    print(action_prefetch_from_template(template_dict))
     print(action_prefetch_from_template(
         template_dict,
         PYSTACHE_TEMPLATE_PREFETCH_BLOCK_ITEM
     ))
+    output_string = action_prefetch_from_template(template_dict)
+    print(output_string)
+    return output_string
 
 
 # if called directly, then run this example:

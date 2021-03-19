@@ -69,7 +69,9 @@ def get_filename_from_pathname(pathname):
 def main():
     """Only called if this script is run directly"""
     # use this script itself as the demo createfile
-    print(action_createfile_from_file(os.path.abspath(__file__)))
+    output_string = action_createfile_from_file(os.path.abspath(__file__))
+    print(output_string)
+    return output_string
 
 
 # if called directly, then run this example:

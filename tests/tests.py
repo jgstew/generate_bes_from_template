@@ -28,6 +28,15 @@ from generate_bes_from_template import *
 
 tests_count = 0  # pylint: disable=invalid-name
 
+# make sure we are testing the right place:
+if args.test_pip:
+    # this will false positive on windows
+    assert "/src/" not in action_prefetch_from_template.__file__
+else:
+    # check for only 'src' so it will work on windows and non-windows
+    assert "src" in action_prefetch_from_template.__file__
+
+
 # pylint: disable=line-too-long
 assert str(action_prefetch_from_template.main()) == (
     "prefetch LGPO.zip sha1:0c74dac83aed569607aaa6df152206c709eef769 size:815660 https://download.microsoft.com/download/8/5/C/85C25433-A1B0-4FFA-9429-7E023E7DA8D8/LGPO.zip sha256:6ffb6416366652993c992280e29faea3507b5b5aa661c33ba1af31f48acea9c4"

@@ -15,26 +15,45 @@ import re
 import chevron  # pylint: disable=import-error
 
 
-def generate_bes_from_template(template_dict):
-    """Generate BES XML file from info in template_dict hash table"""
-    file_path = template_dict['template_file_path']
+def generate_content_from_template(template_dict, template_file_path=None):
+    """return content string from template"""
+
+    # get template_file_path from template_dict
+    if not template_file_path and 'template_file_path' in template_dict:
+        template_file_path = template_dict['template_file_path']
+
+    # template_file_path still missing, but required
+    if not template_file_path:
+        raise ValueError("`template_file_path` not in template_dict and not passed into function")
+
     # check if template file exists and readable:
-    if os.path.isfile(file_path) and os.access(file_path, os.R_OK):
-        if 'SourceReleaseDate' not in template_dict:
-            template_dict['SourceReleaseDate'] = yyyymmdd()
-        if 'x-fixlet-modification-time' not in template_dict:
-            template_dict['x-fixlet-modification-time'] = fixlet_modification_time()
-        if 'DownloadSize' not in template_dict and 'prefetch' in template_dict and \
-                'size' in template_dict['prefetch']:
-            # the following assumes if DownloadSize is not provided, then exactly 1 prefetch will be
-            #  NOTE: this could sum the size of multiple prefetch statements if an array is given
-            #  WARNING: this is a bit fragile. You may need to specify DownloadSize to bypass this
-            template_dict['DownloadSize'] = \
-                (re.search(r'size[=:](.*?)\s', template_dict['prefetch']).group(1))
-        # run render of template, return result:
-        #return pystache.Renderer().render_path(file_path, template_dict)
-        return chevron.render(open(file_path, 'r'), template_dict)
-    return "ERROR: No Template File Found!"
+    if not os.path.isfile(template_file_path) or not os.access(template_file_path, os.R_OK):
+        raise FileNotFoundError(template_file_path)
+
+    return chevron.render(open(template_file_path, 'r'), template_dict)
+
+
+def generate_bes_from_template(template_dict, template_file_path=None):
+    """This function has been renamed to generate_content_from_template"""
+    template_dict = get_missing_bes_values(template_dict)
+    return generate_content_from_template(template_dict, template_file_path)
+
+
+def get_missing_bes_values(template_dict):
+    """Get missing values that con be inferred for BigFix Content"""
+    if 'SourceReleaseDate' not in template_dict:
+        template_dict['SourceReleaseDate'] = yyyymmdd()
+    if 'x-fixlet-modification-time' not in template_dict:
+        template_dict['x-fixlet-modification-time'] = fixlet_modification_time()
+    if 'DownloadSize' not in template_dict and 'prefetch' in template_dict and \
+            'size' in template_dict['prefetch']:
+        # the following assumes if DownloadSize is not provided, then exactly 1 prefetch will be
+        #  NOTE: this could sum the size of multiple prefetch statements if an array is given
+        #  WARNING: this is a bit fragile. You may need to specify DownloadSize to bypass this
+        template_dict['DownloadSize'] = \
+            (re.search(r'size[=:](.*?)\s', template_dict['prefetch']).group(1))
+
+    return template_dict
 
 
 def yyyymmdd(separator="-", date_to_format=datetime.datetime.today()):
@@ -76,6 +95,7 @@ copy __Download/file.txt /tmp/file.txt
 """
     }
     #print(template_dict)
+    #template_dict = get_missing_bes_values(template_dict)
     output_string = generate_bes_from_template(template_dict)
     print(output_string)
     return output_string

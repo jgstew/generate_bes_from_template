@@ -33,6 +33,13 @@ def generate_content_from_template(template_dict, template_file_path=None):
     return chevron.render(open(template_file_path, 'r'), template_dict)
 
 
+def write_file_content(file_path, content_string):
+    """write content to file"""
+    file_stream = open(file_path, "w")
+    file_stream.write(content_string)
+    file_stream.close()
+
+
 def generate_bes_from_template(template_dict, template_file_path=None):
     """This function has been renamed to generate_content_from_template"""
     template_dict = get_missing_bes_values(template_dict)
@@ -98,6 +105,7 @@ copy __Download/file.txt /tmp/file.txt
     #template_dict = get_missing_bes_values(template_dict)
     output_string = generate_bes_from_template(template_dict)
     print(output_string)
+    #write_file_content("/tmp/temp.bes", output_string)
     return output_string
 
 

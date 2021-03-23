@@ -1,0 +1,27 @@
+---
+name: black
+
+on:
+  push:
+    paths:
+      - "**.py"
+      - "requirements.txt"
+      - ".github/workflows/black.yaml"
+  pull_request:
+    paths:
+      - "**.py"
+      - "requirements.txt"
+      - ".github/workflows/black.yaml"
+
+jobs:
+  black:
+    name: runner / black formatter
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run black formatter checks
+        uses: rickstaa/action-black@v1
+        with:
+          black_args: ". --check"
+          # TODO: remove this once passing
+          fail_on_error: false

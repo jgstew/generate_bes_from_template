@@ -20,14 +20,10 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Run black formatter checks
+        # https://github.com/rickstaa/action-black
         uses: rickstaa/action-black@v1
         id: action_black
         with:
-          black_args: "."
+          black_args: ". --check --diff --color"
           # TODO: remove this once passing
           fail_on_error: false
-      - name: Annotate diff changes using reviewdog
-        if: steps.action_black.outputs.is_formatted == 'true'
-        uses: reviewdog/action-suggester@v1
-        with:
-          tool_name: blackfmt

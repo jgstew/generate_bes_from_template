@@ -3,11 +3,14 @@ Example python script to generate .bes files for windows log settings
 """
 # pylint: disable=invalid-name,wrong-import-position
 import sys
+import os.path
 
-sys.path.append('../')
-#sys.path.append('../../')
+sys.path.append(
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+)
 
-from generate_bes_from_template import generate_bes_from_template
+from generate_bes_from_template import generate_bes_from_template  # pylint: disable=import-error
 
 LOG_NAME_ARRAY = ['Security', 'System', 'Application']
 

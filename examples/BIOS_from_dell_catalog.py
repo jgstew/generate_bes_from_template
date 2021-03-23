@@ -13,9 +13,14 @@ sys.path.append('../')
 sys.path.append('../../')
 
 
-from bigfix_prefetch.prefetch_from_dictionary import *  # noqa: F403
+from bigfix_prefetch import prefetch_from_dictionary  # noqa: F403
+from bigfix_prefetch.prefetch_from_url import url_to_prefetch  # noqa: F403
 
-from bigfix_prefetch.url_to_prefetch import *  # noqa: F403
+
+sys.path.append(
+    os.path.join(
+        os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+)
 
 # https://github.com/jgstew/generate_bes_from_template
 from generate_bes_from_template import generate_bes_from_template

@@ -1,5 +1,8 @@
 [MASTER]
 ignore=MSI_to_BES.py
 
+[MESSAGES CONTROL]
+disable = C0330, C0326
+
 [format]
-max-line-length = 101
+max-line-length = 88

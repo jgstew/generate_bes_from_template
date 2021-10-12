@@ -4,7 +4,7 @@ generate_bes_from_template.py
 
 Created by James Stewart (@JGStew) on 2020-03-03.
 """
-
+# pylint: disable=consider-using-with
 from __future__ import absolute_import
 
 import os
@@ -37,7 +37,7 @@ def generate_content_from_template(
         raise FileNotFoundError(template_file_path)
 
     return chevron.render(
-        open(template_file_path, "r"), template_dict, partials_path=partials_path
+        open(template_file_path, "r"), template_dict, partials_path=partials_path,
     )
 
 

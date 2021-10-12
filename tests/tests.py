@@ -86,6 +86,6 @@ if not args.test_pip:
 
 # tests pass, return 0:
 print("-------------------------------------")
-print(f"Success: {tests_count} Tests pass")
+print("Success: %d Tests pass" % tests_count)
 print("")
 sys.exit(0)

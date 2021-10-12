@@ -11,15 +11,15 @@ sys.dont_write_bytecode = True
 
 # check for --test_pip arg
 parser = argparse.ArgumentParser()
-parser.add_argument("--test_pip", help="to test package installed with pip",
-                    action="store_true")
+parser.add_argument(
+    "--test_pip", help="to test package installed with pip", action="store_true"
+)
 args = parser.parse_args()
 
 if not args.test_pip:
     # add module folder to import paths for testing local src
     sys.path.append(
-        os.path.join(
-            os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
+        os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
     )
     # reverse the order so we make sure to get the local src module
     sys.path.reverse()
@@ -28,7 +28,7 @@ from generate_bes_from_template import *
 
 tests_count = 0  # pylint: disable=invalid-name
 
-print(action_prefetch_from_template.__file__)
+# print(action_prefetch_from_template.__file__)
 
 # make sure we are testing the right place:
 if args.test_pip:
@@ -37,6 +37,17 @@ if args.test_pip:
 else:
     # check for only 'src' so it will work on windows and non-windows
     assert "src" in action_prefetch_from_template.__file__
+
+
+def test_partials():
+    """test mustache template partials"""
+    print("test_partials()")
+    script_folder = os.path.dirname(os.path.abspath(__file__))
+    template_file_path = os.path.join(script_folder, "TemplateExample.mustache")
+    result = generate_bes_from_template.generate_content_from_template(  # pylint: disable=unexpected-keyword-arg
+        {}, template_file_path, partials_path=script_folder
+    )
+    return result
 
 
 # pylint: disable=line-too-long
@@ -68,7 +79,8 @@ createfile until __END_OF_FILE__
 """
 )
 tests_count += 1
-
+assert str(test_partials()).startswith("Hello, World!")
+tests_count += 1
 
 # tests pass, return 0:
 print("-------------------------------------")

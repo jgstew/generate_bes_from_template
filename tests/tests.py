@@ -79,11 +79,13 @@ createfile until __END_OF_FILE__
 """
 )
 tests_count += 1
-assert str(test_partials()).startswith("Hello, World!")
-tests_count += 1
+
+if not args.test_pip:
+    assert str(test_partials()).startswith("Hello, World!")
+    tests_count += 1
 
 # tests pass, return 0:
 print("-------------------------------------")
-print("Success: %d Tests pass" % tests_count)
+print(f"Success: {tests_count} Tests pass")
 print("")
 sys.exit(0)

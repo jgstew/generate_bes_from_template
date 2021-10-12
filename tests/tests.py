@@ -1,5 +1,5 @@
 """test generate_bes_from_template"""
-# pylint: disable=import-error,wildcard-import,undefined-variable,wrong-import-position,unused-wildcard-import
+# pylint: disable=import-error,wildcard-import,undefined-variable,wrong-import-position,unused-wildcard-import,consider-using-f-string
 
 import argparse
 import os.path
@@ -86,6 +86,6 @@ if not args.test_pip:
 
 # tests pass, return 0:
 print("-------------------------------------")
-print("Success: %d Tests pass" % tests_count)  # pylint: consider-using-f-string
+print("Success: %d Tests pass" % tests_count)
 print("")
 sys.exit(0)

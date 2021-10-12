@@ -86,6 +86,6 @@ if not args.test_pip:
 
 # tests pass, return 0:
 print("-------------------------------------")
-print("Success: %d Tests pass" % tests_count)
+print("Success: %d Tests pass" % tests_count)  # pylint: consider-using-f-string
 print("")
 sys.exit(0)

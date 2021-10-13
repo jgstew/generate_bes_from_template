@@ -39,13 +39,13 @@ else:
     assert "src" in action_prefetch_from_template.__file__
 
 
-def test_partials():
+def test_partials(partials_path="."):
     """test mustache template partials"""
     print("test_partials()")
     script_folder = os.path.dirname(os.path.abspath(__file__))
     template_file_path = os.path.join(script_folder, "TemplateExample.mustache")
     result = generate_bes_from_template.generate_content_from_template(  # pylint: disable=unexpected-keyword-arg
-        {}, template_file_path, partials_path=script_folder
+        {}, template_file_path, partials_path=partials_path
     )
     return result
 
@@ -81,7 +81,13 @@ createfile until __END_OF_FILE__
 tests_count += 1
 
 if not args.test_pip:
-    assert str(test_partials()).startswith("Hello, World!")
+    script_folder_path = os.path.dirname(os.path.abspath(__file__))
+    # print(test_partials(script_folder_path))
+    assert str(test_partials(script_folder_path)).startswith("Hello, World!")
+    tests_count += 1
+    assert str(test_partials(script_folder_path)).startswith(
+        "Hello, World! You can load partials from a folder!"
+    )
     tests_count += 1
 
 # tests pass, return 0:

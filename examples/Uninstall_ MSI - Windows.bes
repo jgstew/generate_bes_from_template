@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BES.xsd">
+	<Task>
+		<Title>Uninstall: MSI - {{DisplayName}} - Windows</Title>
+		<Description><![CDATA[<P>This task will uninstall the MSI: {{DisplayName}}</P><P>&nbsp;</P>]]></Description>
+		<Relevance><![CDATA[/* Windows XP or later */ version of operating system >= "5.1"]]></Relevance>
+		<Relevance>/* Windows Only */ windows of operating system</Relevance>
+		<Relevance><![CDATA[1 = number of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries )]]></Relevance>
+		<Category>Uninstall</Category>
+		<DownloadSize>0</DownloadSize>
+		<Source>github.com/jgstew</Source>
+		<SourceID>jgstew</SourceID>
+		<SourceReleaseDate>2022-03-24</SourceReleaseDate>
+		<MIMEField>
+			<Name>x-relevance-evaluation-period</Name>
+			<Value>12:00:00</Value>
+		</MIMEField>
+		<MIMEField>
+			<Name>x-fixlet-modification-time</Name>
+			<Value>Thu, 24 Mar 2022 15:13:10 -0400</Value>
+		</MIMEField>
+		<Domain>BESC</Domain>
+		<DefaultAction ID="Action1">
+			<Description>
+				<PreLink>Click </PreLink>
+				<Link>here</Link>
+				<PostLink><![CDATA[ to uninstall {{DisplayName}}]]></PostLink>
+			</Description>
+			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell"><![CDATA[
+waithidden msiexec.exe /X { name of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries ) } /qn
+]]></ActionScript>
+			<SuccessCriteria Option="OriginalRelevance"></SuccessCriteria>
+		</DefaultAction>
+	</Task>
+</BES>

@@ -27,7 +27,14 @@
 				<PostLink><![CDATA[ to uninstall {{DisplayName}}]]></PostLink>
 			</Description>
 			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell"><![CDATA[
-waithidden msiexec.exe /X { name of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries ) } /qn
+// Uninstall:
+override wait
+Hidden=true
+Priority=low
+Completion=job
+timeout_seconds=3600
+disposition=terminate
+wait msiexec.exe /X { name of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries ) } /qn
 ]]></ActionScript>
 			<SuccessCriteria Option="OriginalRelevance"></SuccessCriteria>
 		</DefaultAction>

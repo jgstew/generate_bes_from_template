@@ -7,6 +7,10 @@ import os
 import bescli
 import generate_bes_from_template
 
+# DisplayNames of MSI Applications - Windows
+# - https://bigfix.me/relevance/details/3023371
+# (DisplayNames, UninstallStrings) of non-MSI Applications - Windows
+# - https://bigfix.me/relevance/details/3023370
 
 # get property name:
 # unique value of names of bes properties whose(custom flag of it AND name of it contains "DisplayName" AND definition of it contains "ModifyPath")
@@ -39,13 +43,25 @@ def save_item_to_besfile(
 
 def main():
     """run this by default"""
-    print("Not yet implemented!")
     bigfix_cli = bescli.bescli.BESCLInterface()
     bigfix_cli.do_conf()
+    # use session relevance to get the name of the property to get the values from:
     property_name = bigfix_cli.bes_conn.session_relevance_array(
         'unique value of names of bes properties whose(custom flag of it AND name of it contains "DisplayName" AND definition of it contains "ModifyPath")'
     )[0]
-    # print(property_name)
+    # print help messages if property not found:
+    if "ERROR:" in property_name:
+        print("ERROR: Property not found!", property_name)
+        print("You may need to create the property that this script uses")
+        print(
+            "- Recommended Property Name: `DisplayNames of MSI Applications - Windows`"
+        )
+        print("- Recommended Property Evaluation Period: Once a day")
+        print(
+            "- Recommended Property Relevance found here: https://bigfix.me/relevance/details/3023371"
+        )
+        raise ValueError("ERROR: Property not found!", property_name)
+    # get the unique set of property results to generate the MSI installers for:
     property_results = bigfix_cli.bes_conn.session_relevance_array(
         f'unique values of values of results of bes property "{property_name}"'
     )
@@ -57,7 +73,7 @@ def main():
     template_dict = generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
         template_dict
     )
-    print(template_dict)
+    # print(template_dict)
     # print(property_results)
     for result in property_results:
         # print(result)

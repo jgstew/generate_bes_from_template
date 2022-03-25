@@ -4,7 +4,7 @@ Generate MSI Uninstallers from template.
 
 import bescli
 
-# import generate_bes_from_template
+import generate_bes_from_template
 
 
 # get property name:
@@ -26,10 +26,25 @@ def main():
     property_results = bigfix_cli.bes_conn.session_relevance_array(
         f'unique values of values of results of bes property "{property_name}"'
     )
+    template_dict = {}
+    template_dict["DownloadSize"] = "0"
+    template_dict[
+        "template_file_path"
+    ] = "examples/Uninstall_ MSI - Windows.bes.mustache"
+    template_dict = generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
+        template_dict
+    )
+    print(template_dict)
     # print(property_results)
     for result in property_results:
-        print(result)
+        # print(result)
         # generate the uninstallers:
+        template_dict["DisplayName"] = result
+        generated_task = generate_bes_from_template.generate_bes_from_template.generate_content_from_template(
+            template_dict
+        )
+        print(generated_task)
+        break
 
 
 # if called directly, then run this example:

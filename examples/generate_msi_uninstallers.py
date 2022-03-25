@@ -1,5 +1,8 @@
 """
 Generate MSI Uninstallers from template.
+
+Build into binary:
+pyinstaller generate_msi_uninstallers.py --collect-all besapi --noconfirm --add-data "./Uninstall_MSI-Windows.bes.mustache;./" --clean --onefile --noupx
 """
 
 import os
@@ -67,7 +70,11 @@ def main():
     )
     template_dict = {}
     template_dict["DownloadSize"] = "0"
-    template_dict["template_file_path"] = "examples/Uninstall_MSI-Windows.bes.mustache"
+    template_file_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "Uninstall_MSI-Windows.bes.mustache"
+    )
+
+    template_dict["template_file_path"] = template_file_path
     template_dict = generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
         template_dict
     )
@@ -77,9 +84,11 @@ def main():
         # print(result)
         # generate the uninstallers:
         template_dict["DisplayName"] = result
+
         generated_task = generate_bes_from_template.generate_bes_from_template.generate_content_from_template(
             template_dict
         )
+
         print(save_item_to_besfile(generated_task))
 
 

@@ -5,7 +5,9 @@
 		<Description><![CDATA[<P>This task will uninstall the MSI: {{DisplayName}}</P><P>&nbsp;</P>]]></Description>
 		<Relevance><![CDATA[/* Windows XP or later */ version of operating system >= "5.1"]]></Relevance>
 		<Relevance>/* Windows Only */ windows of operating system</Relevance>
-		<Relevance><![CDATA[1 = number of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries )]]></Relevance>
+		<Relevance><![CDATA[
+			1 = number of (it as trimmed string) whose(it = "{{DisplayName}}") of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string) of values "DisplayName" of keys whose(exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries)
+			]]></Relevance>
 		<Category>Uninstall</Category>
 		<DownloadSize>0</DownloadSize>
 		<Source>github.com/jgstew</Source>
@@ -34,7 +36,7 @@ Priority=low
 Completion=job
 timeout_seconds=3600
 disposition=terminate
-wait msiexec.exe /X { name of keys whose( (exists values "DisplayName" whose(it as string as lowercase starts with "{{DisplayName}}" as lowercase) of it) AND (exists values whose(it as string as lowercase starts with "msiexec") of it) ) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of ( x64 registries; x32 registries ) } /qn
+wait msiexec.exe /X { unique value of names of it whose(exists (it as trimmed string) whose(it = "{{DisplayName}}") of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string) of values "DisplayName" of it) of keys whose(exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) } /qn
 ]]></ActionScript>
 			<SuccessCriteria Option="OriginalRelevance"></SuccessCriteria>
 		</DefaultAction>

@@ -67,9 +67,7 @@ def main():
     )
     template_dict = {}
     template_dict["DownloadSize"] = "0"
-    template_dict[
-        "template_file_path"
-    ] = "examples/Uninstall_ MSI - Windows.bes.mustache"
+    template_dict["template_file_path"] = "examples/Uninstall_MSI-Windows.bes.mustache"
     template_dict = generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
         template_dict
     )

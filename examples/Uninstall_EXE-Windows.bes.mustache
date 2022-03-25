@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<BES xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="BES.xsd">
+	<Task>
+		<Title><![CDATA[Uninstall: non-MSI - {{DisplayName}} - Windows]]></Title>
+		<Description><![CDATA[<P>This task will uninstall the non-MSI: {{DisplayName}}</P><P>&nbsp;</P>]]></Description>
+		<Relevance><![CDATA[/* Windows XP or later */ version of operating system >= "5.1"]]></Relevance>
+		<Relevance>/* Windows Only */ windows of operating system</Relevance>
+		<Relevance><![CDATA[1 = number of items 0 whose(it = "{{DisplayName}}") of ( (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string)  of values "DisplayName" of it, value "UninstallString_Hidden" of it | value "QuietUninstallString" of it | value "UninstallString" of it) whose(item 1 of it as string as trimmed string != "") of keys whose(exists (values "UninstallString" of it; values "QuietUninstallString" of it; values "UninstallString_Hidden" of it) AND not exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries)]]></Relevance>
+		<Category>Uninstall</Category>
+		<DownloadSize>0</DownloadSize>
+		<Source></Source>
+		<SourceID>github.com/jgstew</SourceID>
+		<SourceReleaseDate>{{SourceReleaseDate}}</SourceReleaseDate>
+		<MIMEField>
+			<Name>x-relevance-evaluation-period</Name>
+			<Value>12:00:00</Value>
+		</MIMEField>
+		<MIMEField>
+			<Name>x-fixlet-modification-time</Name>
+			<Value>{{x-fixlet-modification-time}}</Value>
+		</MIMEField>
+		<Domain>BESC</Domain>
+		<DefaultAction ID="Action1">
+			<Description>
+				<PreLink>Click </PreLink>
+				<Link>here</Link>
+				<PostLink><![CDATA[ to uninstall {{DisplayName}}]]></PostLink>
+			</Description>
+			<ActionScript MIMEType="application/x-Fixlet-Windows-Shell"><![CDATA[
+// Uninstall:
+override wait
+Hidden=true
+Priority=low
+Completion=job
+timeout_seconds=3600
+disposition=terminate
+wait { unique value of (it as string as trimmed string) of items 1 of it whose(item 0 of it contains "The Jackbox Party Pack 6") of ( (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string)  of values "DisplayName" of it, value "UninstallString_Hidden" of it | value "QuietUninstallString" of it | value "UninstallString" of it) whose(item 1 of it as string as trimmed string != "") of keys whose(exists (values "UninstallString" of it; values "QuietUninstallString" of it; values "UninstallString_Hidden" of it) AND not exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) }
+]]></ActionScript>
+			<SuccessCriteria Option="OriginalRelevance"></SuccessCriteria>
+		</DefaultAction>
+	</Task>
+</BES>

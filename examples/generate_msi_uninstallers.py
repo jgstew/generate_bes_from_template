@@ -2,8 +2,9 @@
 Generate MSI Uninstallers from template.
 """
 
-import bescli
+import os
 
+import bescli
 import generate_bes_from_template
 
 
@@ -12,6 +13,28 @@ import generate_bes_from_template
 
 # get unique property values: (where the property is named `DisplayNames of MSI Applications - Windows`)
 # unique values of values of results of bes property "DisplayNames of MSI Applications - Windows"
+
+
+# this function will be moved within BESAPI itself in the future:
+def save_item_to_besfile(
+    xml_string, export_folder="./", name_trim=100,
+):
+    """save an xml string to bes file"""
+    item_folder = export_folder
+    if not os.path.exists(item_folder):
+        os.makedirs(item_folder)
+
+    content_obj = bescli.bescli.besapi.RESTResult.objectify_text(None, xml_string)
+    # get first tag in XML that is the Type
+    content_type_tag = list(content_obj.__dict__.keys())[0]
+    item = content_obj[content_type_tag]
+    item_path = item_folder + "/%s.bes" % bescli.bescli.besapi.sanitize_txt(
+        item.Title.text[:name_trim],
+    )
+    item_path = item_path.replace("//", "/")
+    with open(item_path, "wb",) as bes_file:
+        bes_file.write(xml_string.encode("utf-8"))
+    return item_path
 
 
 def main():
@@ -43,8 +66,7 @@ def main():
         generated_task = generate_bes_from_template.generate_bes_from_template.generate_content_from_template(
             template_dict
         )
-        print(generated_task)
-        break
+        print(save_item_to_besfile(generated_task))
 
 
 # if called directly, then run this example:

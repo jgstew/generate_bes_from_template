@@ -2,7 +2,7 @@
 Generate MSI Uninstallers from template.
 
 Build into binary:
-pyinstaller generate_msi_uninstallers.py --collect-all besapi --noconfirm --add-data "./Uninstall_MSI-Windows.bes.mustache;./" --clean --onefile --noupx
+pyinstaller generate_uninstallers.py --collect-all besapi --noconfirm --add-data "./Uninstall_MSI-Windows.bes.mustache;./" --add-data "./Uninstall_EXE-Windows.bes.mustache;./" --clean --onefile --noupx
 """
 
 import os

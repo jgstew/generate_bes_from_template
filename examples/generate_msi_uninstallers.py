@@ -12,15 +12,13 @@ import generate_bes_from_template
 
 # DisplayNames of MSI Applications - Windows
 # - https://bigfix.me/relevance/details/3023371
+# Evaluate Every: 1 day
 # if (windows of operating system AND (if exists property whose(it as string contains "in proxy agent context") then NOT in proxy agent context else TRUE)) then ( unique values of (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string) of values "DisplayName" of keys whose(exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) ) else NOTHINGS
 
 # DisplayNames of non-MSI Applications - Windows
-# - https://bigfix.me/relevance/details/3023374
-# if (windows of operating system AND (if exists property whose(it as string contains "in proxy agent context") then NOT in proxy agent context else TRUE)) then ( unique values of items 0 of ( (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string)  of values "DisplayName" of it, value "UninstallString_Hidden" of it | value "QuietUninstallString" of it | value "UninstallString" of it) whose(item 1 of it as string as trimmed string != "") of keys whose(exists (values "UninstallString" of it; values "QuietUninstallString" of it; values "UninstallString_Hidden" of it) AND not exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) ) else NOTHINGS
-
-# (DisplayNames, UninstallStrings) of non-MSI Applications - Windows
 # - https://bigfix.me/relevance/details/3023370
-# if (windows of operating system AND (if exists property whose(it as string contains "in proxy agent context") then NOT in proxy agent context else TRUE)) then ( unique values of (it as string) of ( (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string)  of values "DisplayName" of it, value "UninstallString_Hidden" of it | value "QuietUninstallString" of it | value "UninstallString" of it) whose(item 1 of it as string as trimmed string != "") of keys whose(exists (values "UninstallString" of it; values "QuietUninstallString" of it; values "UninstallString_Hidden" of it) AND not exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) ) else NOTHINGS
+# Evaluate Every: 1 day
+# if (windows of operating system AND (if exists property whose(it as string contains "in proxy agent context") then NOT in proxy agent context else TRUE)) then ( unique values of items 0 of ( (it as trimmed string) of (preceding text of first "%ae" of it | it) of (preceding text of first "Â" of it | it) of (preceding text of first "%a9" of it | it) of (preceding text of first "™" of it | it) of (it as string)  of values "DisplayName" of it, value "UninstallString_Hidden" of it | value "QuietUninstallString" of it | value "UninstallString" of it) whose(item 1 of it as string as trimmed string != "") of keys whose(exists (values "UninstallString" of it; values "QuietUninstallString" of it; values "UninstallString_Hidden" of it) AND not exists (values "UninstallString" of it; values "ModifyPath" of it) whose(it as string as lowercase contains "msiexec")) of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (x64 registries; x32 registries) ) else NOTHINGS
 
 # get property name:
 # unique value of names of bes properties whose(custom flag of it AND name of it contains "DisplayName" AND definition of it contains "ModifyPath")
@@ -55,6 +53,7 @@ def main():
     """run this by default"""
     bigfix_cli = bescli.bescli.BESCLInterface()
     bigfix_cli.do_conf()
+    # generate MSI uninstallers
     # use session relevance to get the name of the property to get the values from:
     property_name = bigfix_cli.bes_conn.session_relevance_array(
         'unique value of names of bes properties whose(custom flag of it AND name of it contains "DisplayName" AND definition of it contains "ModifyPath")'
@@ -75,6 +74,7 @@ def main():
     property_results = bigfix_cli.bes_conn.session_relevance_array(
         f'unique values of values of results of bes property "{property_name}"'
     )
+    # print(property_results)
     template_dict = {}
     template_dict["DownloadSize"] = "0"
     template_file_path = os.path.join(
@@ -86,6 +86,41 @@ def main():
         template_dict
     )
     # print(template_dict)
+
+    for result in property_results:
+        # print(result)
+        # generate the uninstallers:
+        template_dict["DisplayName"] = result
+
+        generated_task = generate_bes_from_template.generate_bes_from_template.generate_content_from_template(
+            template_dict
+        )
+        print(save_item_to_besfile(generated_task))
+
+    # generate EXE uninstallers:
+    template_file_path = os.path.join(
+        os.path.dirname(os.path.abspath(__file__)), "Uninstall_EXE-Windows.bes.mustache"
+    )
+    template_dict["template_file_path"] = template_file_path
+    property_name = bigfix_cli.bes_conn.session_relevance_array(
+        'unique value of names of bes properties whose(custom flag of it AND name of it contains "DisplayName" AND definition of it contains "QuietUninstallString")'
+    )[0]
+    # print help messages if property not found:
+    if "ERROR:" in property_name:
+        print("ERROR: Property not found!", property_name)
+        print("You may need to create the property that this script uses")
+        print(
+            "- Recommended Property Name: `DisplayNames of MSI Applications - Windows`"
+        )
+        print("- Recommended Property Evaluation Period: Once a day")
+        print(
+            "- Recommended Property Relevance found here: https://bigfix.me/relevance/details/3023371"
+        )
+        raise ValueError("ERROR: Property not found!", property_name)
+    print(property_name)
+    property_results = bigfix_cli.bes_conn.session_relevance_array(
+        f'unique values of values of results of bes property "{property_name}"'
+    )
     # print(property_results)
     for result in property_results:
         # print(result)
@@ -95,7 +130,6 @@ def main():
         generated_task = generate_bes_from_template.generate_bes_from_template.generate_content_from_template(
             template_dict
         )
-
         print(save_item_to_besfile(generated_task))
 
 

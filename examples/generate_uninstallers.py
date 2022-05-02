@@ -7,7 +7,7 @@ pyinstaller generate_uninstallers.py --collect-all besapi --noconfirm --add-data
 
 import os
 
-import bescli
+import bescli  # pylint: disable=import-error
 import generate_bes_from_template
 
 # DisplayNames of MSI Applications - Windows
@@ -40,6 +40,7 @@ def save_item_to_besfile(
     # get first tag in XML that is the Type
     content_type_tag = list(content_obj.__dict__.keys())[0]
     item = content_obj[content_type_tag]
+    # pylint: disable=consider-using-f-string
     item_path = item_folder + "/%s.bes" % bescli.bescli.besapi.sanitize_txt(
         item.Title.text[:name_trim],
     )

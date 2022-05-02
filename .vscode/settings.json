@@ -1,9 +1,11 @@
 {
-    "git.autofetch": true,
-    "editor.formatOnSave": true,
-    "python.linting.pylintEnabled": true,
-    "python.analysis.diagnosticSeverityOverrides": {
-        "reportMissingImports": "information"
-    },
-    "python.formatting.provider": "black"
+  "git.autofetch": true,
+  "editor.formatOnSave": true,
+  "python.linting.pylintEnabled": true,
+  "python.analysis.diagnosticSeverityOverrides": {
+    "reportMissingImports": "information"
+  },
+  "python.formatting.provider": "black",
+  "files.autoSave": "onFocusChange",
+  "git.enableSmartCommit": true
 }

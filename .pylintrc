@@ -2,7 +2,7 @@
 ignore=MSI_to_BES.py
 
 [MESSAGES CONTROL]
-disable = C0330, C0326, line-too-long, unspecified-encoding
+disable = C0330, C0326, line-too-long, unspecified-encoding, invalid-name
 
 [format]
 max-line-length = 88

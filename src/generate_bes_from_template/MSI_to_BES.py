@@ -138,13 +138,13 @@ def GetPrefetchSingleFile(path, url = "", file_name = ""):
     import os
     import hashlib
     import urllib
-    
+
     if not file_name:
       file_name = GetFileNameFromPath(path)
-      
+
     if not url:
       url = BesRootUploadsUrl() + GetSHA1(path) + "/" + file_name
-      
+
     #  http://stackoverflow.com/questions/961632/converting-integer-to-string-in-python
     return "prefetch %s sha1:%s size:%s %s" % (file_name, GetSHA1(path) , os.path.getsize(path), urllib.quote(url, ":/"))
 
@@ -180,7 +180,7 @@ def BesImportBesFile(file_path):
         request.add_header("Authorization", "Basic %s" % authString)
         request.add_header("Content-Type", "application/xml")
         request.add_data(besData)
-        
+
     try:
         return urllib2.urlopen(request)
     except (urllib2.HTTPError,error):
@@ -212,7 +212,7 @@ def BesUploadFile(file_path):
         request.add_header("Content-Disposition", 'attachment; filename="%s"' % GetFileNameFromPath(file_path))
         # Read bes_file data and add to request
         postData = open(file_path, "rb").read()
-        
+
         request.add_data(postData)
 
         handler = urllib2.urlopen(request)
@@ -225,27 +225,27 @@ def newNode(doc, elementName, nodeText = None, elementAttributes = {}):
     import xml.dom.minidom
     doc = xml.dom.minidom.Document()
     newElement = xml.dom.minidom.Document().createElement(elementName)
-    
-    if (nodeText):	
+
+    if (nodeText):
         if any((character in """<>&'\"""") for character in nodeText):
                 newElement.appendChild(xml.dom.minidom.Document().createCDATASection(nodeText))
         else:
                 newElement.appendChild(xml.dom.minidom.Document().createTextNode(nodeText))
-            
+
     if (elementAttributes):
         for attribute in elementAttributes:
                 newElement.setAttribute(attribute, elementAttributes[attribute])
-                    
+
     return newElement
 
 def newMIME(doc, mimeName, mimeValue):
     import xml.dom.minidom
     doc = xml.dom.minidom.Document()
     newMIMEElement = xml.dom.minidom.Document().createElement('MIMEField')
-	
+
     newMIMEElement.appendChild(newNode(xml.dom.minidom.Document(), 'Name', mimeName))
     newMIMEElement.appendChild(newNode(xml.dom.minidom.Document(), 'Value', mimeValue))
-		
+
     return newMIMEElement
 
 def BesSuccessCriteria(SuccessCriteria = 'OriginalRelevance'):
@@ -253,16 +253,16 @@ def BesSuccessCriteria(SuccessCriteria = 'OriginalRelevance'):
 
 def newlinkDescription(fullDescription):
     import xml.dom.minidom
-    
+
     newDescriptionElement = xml.dom.minidom.Document().createElement('Description')
-    
+
     newDescriptionElement.appendChild(newNode(xml.dom.minidom.Document(), 'PreLink', fullDescription[0]))
     newDescriptionElement.appendChild(newNode(xml.dom.minidom.Document(), 'Link', fullDescription[1]))
     newDescriptionElement.appendChild(newNode(xml.dom.minidom.Document(), 'PostLink', fullDescription[2]))
-    
+
     return newDescriptionElement
 
-		
+
 def newAction(actionDict):
     import xml.dom.minidom
     actionDict['Description'] = ['%s - Click ' % actionDict['ActionNumber'], 'here', ' to take action.']
@@ -271,9 +271,9 @@ def newAction(actionDict):
     newAction.appendChild(newlinkDescription(actionDict['Description']))
     newAction.appendChild(newNode(xml.dom.minidom.Document(), 'ActionScript', actionDict['ActionScript'], {'MIMEType': 'application/x-Fixlet-Windows-Shell'}))
     newAction.appendChild(newNode(xml.dom.minidom.Document(), 'SuccessCriteria', None, {'Option': actionDict['SuccessCriteria']}))
-    
+
     return newAction
-	    
+
 def BesCreateTask(file_path, task_type = "Install"):
     import os
     import datetime
@@ -291,19 +291,19 @@ def BesCreateTask(file_path, task_type = "Install"):
 			    ('CVENames'		    , ""),
 			    ('SANSID' 		    , ""),
                             ))
-                            
+
     doc = xml.dom.minidom.Document()
     root = newNode(doc, 'BES', None, {'xmlns:xsi': 'http://www.w3.org/2001/XMLSchema-instance', 'xsi:noNamespaceSchemaLocation': 'BES.xsd'})
     doc.appendChild(root)
     message = newNode(doc, 'Task')
     root.appendChild(message)
-    
+
     # Append Title and Description
     message.appendChild(newNode(doc, 'Title', GetTitleFromMSI(file_path,task_type)))
     message.appendChild(newNode(doc, 'Description', GetTitleFromMSI(file_path,task_type)))
 
     # Append Relevance
-    
+
     message.appendChild(newNode(doc, 'Relevance', '/* Windows Only */ windows of operating system'))
     message.appendChild(newNode(doc, 'Relevance', '/* WinXP or later */ version of operating system >= "5.1"'))
     message.appendChild(newNode(doc, 'Relevance', GetRelevanceMSI(file_path, task_type) ))
@@ -315,7 +315,7 @@ def BesCreateTask(file_path, task_type = "Install"):
     # Append MIME Source Data
     message.appendChild(newMIME(doc, 'x-fixlet-source', os.path.basename(__file__)))
     message.appendChild(newMIME(doc, 'x-fixlet-modification-time', strftime("%a, %d %b %Y %X +0000", gmtime())))
-		
+
     message.appendChild(newNode(doc, 'Domain', 'BESC'))
 
     # Append Default Action
@@ -339,14 +339,14 @@ def ProcessMultipleMSIs(path):
     file_paths_msi_filtered = []
     print(file_paths_msi)
     #numfiles = []
-    
+
     for file_path in file_paths_msi:
         if 1 == CountNumFilesInDir(file_path):
             file_paths_msi_filtered.append(file_path)
             print(BesImportBesFile(writeFile(file_path + "-Install.bes", BesCreateTask(file_path, "Install"))))
             print(BesImportBesFile(writeFile(file_path + "-Uninstall.bes", BesCreateTask(file_path, "Uninstall"))))
             print(BesUploadFile(file_path))
-            
+
     return file_paths_msi_filtered
 
 # NOTE: there is a more efficient way to get the output of 2 hashes for the same file at once

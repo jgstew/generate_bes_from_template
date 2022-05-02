@@ -8,6 +8,7 @@ pyinstaller generate_uninstallers.py --collect-all besapi --noconfirm --add-data
 import os
 
 import bescli  # pylint: disable=import-error
+
 import generate_bes_from_template
 
 # DisplayNames of MSI Applications - Windows

@@ -5,7 +5,6 @@ import argparse
 import os.path
 import sys
 
-
 # don't create bytecode for tests because it is cluttery in python2
 sys.dont_write_bytecode = True
 

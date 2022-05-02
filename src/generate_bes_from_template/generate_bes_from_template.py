@@ -7,8 +7,8 @@ Created by James Stewart (@JGStew) on 2020-03-03.
 # pylint: disable=consider-using-with
 from __future__ import absolute_import
 
-import os
 import datetime
+import os
 import re
 
 import chevron  # pylint: disable=import-error

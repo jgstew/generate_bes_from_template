@@ -1,13 +1,13 @@
 """
 Generate Dell BIOS Update fixlets from catalog file
 """
+import datetime
+import os
+import sys
+import urllib.error
+
 # pylint: disable=line-too-long,fixme,invalid-name,import-error,wildcard-import,undefined-variable,no-member,wrong-import-position
 import xml.etree.ElementTree as ElementTree  # pylint: disable=consider-using-from-import
-import datetime
-import urllib.error
-import os
-
-import sys
 
 # add parent directory(s) to path search for python modules
 sys.path.append("../")
@@ -16,7 +16,6 @@ sys.path.append("../../")
 
 from bigfix_prefetch import prefetch_from_dictionary  # noqa: F403
 from bigfix_prefetch.prefetch_from_url import url_to_prefetch  # noqa: F403
-
 
 sys.path.append(
     os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")

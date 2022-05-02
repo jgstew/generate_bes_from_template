@@ -10,10 +10,11 @@ Related:
 """
 from __future__ import absolute_import
 
-# import os
-
 # import pystache
 import chevron  # pylint: disable=import-error
+
+# import os
+
 
 PYSTACHE_TEMPLATE_PREFETCH_STATEMENT = """\
 prefetch {{{file_name_downloaded}}} sha1:{{{file_sha1}}} \

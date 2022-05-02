@@ -47,3 +47,10 @@ repos:
   #   rev: v1.0.0
   #   hooks:
   #     - id: check-json5
+  - repo: local
+    hooks:
+      - id: run-tests
+        name: run-tests
+        entry: python tests/tests.py
+        language: system
+        pass_filenames: False

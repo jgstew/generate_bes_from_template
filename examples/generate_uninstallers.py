@@ -112,11 +112,11 @@ def main():
         print("ERROR: Property not found!", property_name)
         print("You may need to create the property that this script uses")
         print(
-            "- Recommended Property Name: `DisplayNames of MSI Applications - Windows`"
+            "- Recommended Property Name: `DisplayNames of non-MSI Applications - Windows`"
         )
         print("- Recommended Property Evaluation Period: Once a day")
         print(
-            "- Recommended Property Relevance found here: https://bigfix.me/relevance/details/3023371"
+            "- Recommended Property Relevance found here: https://bigfix.me/relevance/details/3023374"
         )
         raise ValueError("ERROR: Property not found!", property_name)
     print(property_name)

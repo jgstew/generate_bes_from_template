@@ -17,6 +17,9 @@ from generate_bes_from_template import (
 
 def main():
     """run this by default"""
+
+    # see this project for automating this part:
+    # https://github.com/jgstew/bigfix_prefetch/blob/master/src/bigfix_prefetch/prefetch_from_url.py
     template_dict = {
         "DisplayName": "Slack",
         "version": "4.26.0",

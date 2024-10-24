@@ -43,6 +43,16 @@ jobs:
       - name: Install build tools
         run: pip install setuptools wheel build pyinstaller
 
+      - name: Read module version
+        id: getversion
+        # run: echo "::set-output name=version::$(python ./setup.py --version)"
+        run: echo "version=$(python ./setup.py --version)" >> $GITHUB_OUTPUT
+        # run: echo "::set-output name={name}::{value}"
+        # run: echo "{name}={value}" >> $GITHUB_OUTPUT
+
+      - name: display module version
+        run: echo ${{ steps.getversion.outputs.version }}
+
       - name: Install requirements
         shell: bash
         run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
@@ -50,10 +60,10 @@ jobs:
       - name: Run build
         run: python3 -m build
 
-      - name: Get Wheel File Path
-        id: getwheelfile
-        shell: bash
-        run: echo "::set-output name=wheelfile::$(find "dist" -type f -name "*.whl")"
+      # - name: Get Wheel File Path
+      #   id: getwheelfile
+      #   shell: bash
+      #   run: echo "::set-output name=wheelfile::$(find "dist" -type f -name "*.whl")"
 
       - name: Test pip install of wheel
         shell: bash

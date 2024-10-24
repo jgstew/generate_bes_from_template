@@ -1,0 +1,81 @@
+---
+name: Tag and Release
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - setup.cfg
+      # - "src/bigfix_prefetch/__init__.py"
+      # - ".github/workflows/tag_and_release.yaml"
+
+jobs:
+  release_new_tag:
+    if: github.repository == 'jgstew/generate_bes_from_template'
+    name: Tag and Release
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source code
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.8
+
+      - name: Install requirements
+        run: if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Read VERSION file
+        id: getversion
+        run: echo "::set-output name=version::$(python ./setup.py --version)"
+
+      # only make release if there is NOT a git tag for this version
+      - name: "Check: package version has corresponding git tag"
+        # this will prevent this from doing anything when run through ACT
+        if: ${{ !env.ACT }} && contains(steps.getversion.outputs.version, '.')
+        id: tagged
+        shell: bash
+        run: git show-ref --tags --verify --quiet -- "refs/tags/v${{ steps.getversion.outputs.version }}" && echo "::set-output name=tagged::0" || echo "::set-output name=tagged::1"
+
+      # wait for all other tests to succeed
+      #   what if no other tests?
+      - name: Wait for tests to succeed
+        if: steps.tagged.outputs.tagged == 1
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: master
+          running-workflow-name: "Tag and Release"
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 30
+
+      - name: Install build tools
+        if: steps.tagged.outputs.tagged == 1
+        run: pip install setuptools wheel build
+
+      - name: Run build
+        if: steps.tagged.outputs.tagged == 1
+        run: python3 -m build
+
+      - name: Get Wheel File
+        if: steps.tagged.outputs.tagged == 1
+        id: getwheelfile
+        shell: bash
+        run: echo "::set-output name=wheelfile::$(find "dist" -type f -name "*.whl")"
+
+      - name: Automatically create github release
+        if: steps.tagged.outputs.tagged == 1
+        uses: "marvinpinto/action-automatic-releases@latest"
+        with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: v${{ steps.getversion.outputs.version }}
+          prerelease: false
+          files: |
+            ${{ steps.getwheelfile.outputs.wheelfile }}
+
+      - name: Publish distribution to PyPI
+        if: steps.tagged.outputs.tagged == 1
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}

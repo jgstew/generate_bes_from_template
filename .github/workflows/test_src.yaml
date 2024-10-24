@@ -5,11 +5,13 @@ on:
   push:
     paths:
       - "**.py"
+      - setup.cfg
       - "requirements.txt"
       - ".github/workflows/test_src.yaml"
   pull_request:
     paths:
       - "**.py"
+      - setup.cfg
       - "requirements.txt"
       - ".github/workflows/test_src.yaml"
 

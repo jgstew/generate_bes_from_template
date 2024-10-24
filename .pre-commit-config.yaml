@@ -2,6 +2,7 @@
 # run on only items staged in git:  pre-commit
 # automatically run on commit:      pre-commit install
 # check all files in repo:          pre-commit run --all-files
+# update all checks to latest:      pre-commit autoupdate
 # https://github.com/pre-commit/pre-commit-hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -29,12 +30,12 @@ repos:
       # - id: no-commit-to-branch
       #   args: [--branch, main]
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.26.3
+    rev: v1.35.1
     hooks:
       - id: yamllint
         args: [-c=.yamllint.yaml]
   - repo: https://github.com/pre-commit/mirrors-isort
-    rev: v5.9.3
+    rev: v5.10.1
     hooks:
       - id: isort
         exclude: "src/generate_bes_from_template/MSI_to_BES.py"
@@ -42,15 +43,10 @@ repos:
     rev: 3.9.2
     hooks:
       - id: flake8
-  # this works with json with comments, but gave me an error
-  # - repo: https://gitlab.com/bmares/check-json5
-  #   rev: v1.0.0
+  # - repo: local
   #   hooks:
-  #     - id: check-json5
-  - repo: local
-    hooks:
-      - id: run-tests
-        name: run-tests
-        entry: python tests/tests.py
-        language: system
-        pass_filenames: False
+  #     - id: run-tests
+  #       name: run-tests
+  #       entry: python3 tests/tests.py
+  #       language: system
+  #       pass_filenames: False

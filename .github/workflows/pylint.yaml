@@ -2,22 +2,22 @@
 name: pylint
 
 on:
-  push:
-    paths:
-      - "**.py"
-      - ".pylintrc"
-      - "requirements.txt"
-      - ".github/workflows/pylint.yaml"
-  pull_request:
-    paths:
-      - "**.py"
-      - ".pylintrc"
-      - "requirements.txt"
-      - ".github/workflows/pylint.yaml"
+  workflow_dispatch
+  # push:
+  #   paths:
+  #     - "**.py"
+  #     - ".pylintrc"
+  #     - "requirements.txt"
+  #     - ".github/workflows/pylint.yaml"
+  # pull_request:
+  #   paths:
+  #     - "**.py"
+  #     - ".pylintrc"
+  #     - "requirements.txt"
+  #     - ".github/workflows/pylint.yaml"
 
 jobs:
   pylint:
-
     runs-on: ubuntu-latest
 
     steps:

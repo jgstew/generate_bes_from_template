@@ -30,7 +30,9 @@ import generate_bes_from_template
 
 # this function will be moved within BESAPI itself in the future:
 def save_item_to_besfile(
-    xml_string, export_folder="./", name_trim=100,
+    xml_string,
+    export_folder="./",
+    name_trim=100,
 ):
     """save an xml string to bes file"""
     item_folder = export_folder
@@ -46,7 +48,10 @@ def save_item_to_besfile(
         item.Title.text[:name_trim],
     )
     item_path = item_path.replace("//", "/")
-    with open(item_path, "wb",) as bes_file:
+    with open(
+        item_path,
+        "wb",
+    ) as bes_file:
         bes_file.write(xml_string.encode("utf-8"))
     return item_path
 
@@ -84,8 +89,10 @@ def main():
     )
 
     template_dict["template_file_path"] = template_file_path
-    template_dict = generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
-        template_dict
+    template_dict = (
+        generate_bes_from_template.generate_bes_from_template.get_missing_bes_values(
+            template_dict
+        )
     )
     # print(template_dict)
 

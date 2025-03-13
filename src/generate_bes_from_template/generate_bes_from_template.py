@@ -36,7 +36,9 @@ def generate_content_from_template(
         raise FileNotFoundError(template_file_path)
 
     return chevron.render(
-        open(template_file_path, "r"), template_dict, partials_path=partials_path,
+        open(template_file_path, "r"),
+        template_dict,
+        partials_path=partials_path,
     )
 
 

@@ -1,4 +1,5 @@
 """test generate_bes_from_template"""
+
 # pylint: disable=import-error,wildcard-import,undefined-variable,wrong-import-position,unused-wildcard-import,consider-using-f-string
 
 import argparse

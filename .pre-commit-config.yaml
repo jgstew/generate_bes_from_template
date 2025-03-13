@@ -43,11 +43,11 @@ repos:
       - id: isort
         exclude: "src/generate_bes_from_template/MSI_to_BES.py"
 
-  # - repo: https://github.com/psf/black
-  #   rev: 24.10.0
-  #   hooks:
-  #     - id: black
-  #       exclude: "src/generate_bes_from_template/MSI_to_BES.py"
+  - repo: https://github.com/psf/black
+    rev: 24.10.0
+    hooks:
+      - id: black
+        exclude: "src/generate_bes_from_template/MSI_to_BES.py"
 
   - repo: https://github.com/python-jsonschema/check-jsonschema
     rev: 0.31.0

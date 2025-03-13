@@ -1,6 +1,7 @@
 """
 Example python script to generate .bes files for windows msi content
 """
+
 import os.path
 
 # pylint: disable=invalid-name,wrong-import-position

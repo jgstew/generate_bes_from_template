@@ -1,6 +1,7 @@
 """
 Generate Dell BIOS Update fixlets from catalog file
 """
+
 import datetime
 import os
 import sys

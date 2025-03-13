@@ -2,11 +2,12 @@
 # run on only items staged in git:  pre-commit
 # automatically run on commit:      pre-commit install
 # check all files in repo:          pre-commit run --all-files
+# check all files manual stage:     pre-commit run --all-files --hook-stage manual
 # update all checks to latest:      pre-commit autoupdate
 # https://github.com/pre-commit/pre-commit-hooks
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v4.0.1
+    rev: v4.6.0
     hooks:
       - id: check-yaml
       # check-json doesn't work with json with comments
@@ -29,20 +30,42 @@ repos:
       - id: detect-private-key
       # - id: no-commit-to-branch
       #   args: [--branch, main]
+
   - repo: https://github.com/adrienverge/yamllint.git
-    rev: v1.35.1
+    rev: v1.36.0
     hooks:
       - id: yamllint
         args: [-c=.yamllint.yaml]
+
   - repo: https://github.com/pre-commit/mirrors-isort
     rev: v5.10.1
     hooks:
       - id: isort
         exclude: "src/generate_bes_from_template/MSI_to_BES.py"
-  # - repo: https://gitlab.com/pycqa/flake8
-  #   rev: 3.9.2
+
+  # - repo: https://github.com/psf/black
+  #   rev: 24.10.0
+  #   hooks:
+  #     - id: black
+  #       exclude: "src/generate_bes_from_template/MSI_to_BES.py"
+
+  - repo: https://github.com/python-jsonschema/check-jsonschema
+    rev: 0.31.0
+    hooks:
+      - id: check-github-workflows
+        args: ["--verbose"]
+
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
+      - id: check-hooks-apply
+
+  # - repo: https://github.com/pycqa/flake8
+  #   rev: 7.1.2
   #   hooks:
   #     - id: flake8
+  #       args: ['--ignore=W191,E101,E501']
+
   # - repo: local
   #   hooks:
   #     - id: run-tests

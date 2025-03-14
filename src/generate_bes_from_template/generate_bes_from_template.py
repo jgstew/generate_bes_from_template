@@ -75,7 +75,9 @@ def get_missing_bes_values(template_dict):
         #  WARNING: this is a bit fragile. You may need to specify DownloadSize to bypass this
         template_dict["DownloadSize"] = re.search(
             r"size[=:](.*?)\s", template_dict["prefetch"]
-        ).group(1)
+        ).group(  # pyright: ignore[reportOptionalMemberAccess]
+            1
+        )
 
     return template_dict
 

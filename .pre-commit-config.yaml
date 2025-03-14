@@ -111,3 +111,24 @@ repos:
   #       entry: python3 tests/tests.py
   #       language: system
   #       pass_filenames: False
+
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.30.0
+    hooks:
+      - id: typos
+        exclude: ".bes$"
+
+  - repo: https://github.com/RobertCraigie/pyright-python
+    rev: v1.1.396
+    hooks:
+      - id: pyright
+        additional_dependencies: [chevron, bigfix_prefetch, setuptools, besapi]
+        exclude: "MSI_to_BES.py|BIOS_from_dell_catalog.py|generate_uninstallers.py"
+
+  - repo: https://github.com/pycqa/pylint
+    rev: v3.3.5
+    hooks:
+      - id: pylint
+        args: [--rcfile=.pylintrc]
+        additional_dependencies: [setuptools]
+        exclude: "BIOS_from_dell_catalog.py|TEMPLATE_Event_Logs_Retain-LOG-Windows.py"

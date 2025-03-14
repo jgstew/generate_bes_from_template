@@ -54,6 +54,7 @@ repos:
     hooks:
       - id: check-github-workflows
         args: ["--verbose"]
+      - id: check-dependabot
 
   - repo: meta
     hooks:

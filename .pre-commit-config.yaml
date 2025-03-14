@@ -86,6 +86,18 @@ repos:
         stages: [manual]
         exclude: "src/generate_bes_from_template/MSI_to_BES.py"
 
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
+    hooks:
+      - id: bandit
+        args: ["-r", "-lll"]
+        exclude: "src/generate_bes_from_template/MSI_to_BES.py"
+
+  - repo: https://github.com/sirwart/ripsecrets
+    rev: v0.1.8
+    hooks:
+      - id: ripsecrets
+
   # - repo: https://github.com/astral-sh/ruff-pre-commit
   #   rev: v0.9.10
   #   hooks:

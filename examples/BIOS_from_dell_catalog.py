@@ -8,7 +8,7 @@ import sys
 import urllib.error
 
 # pylint: disable=line-too-long,fixme,invalid-name,import-error,wildcard-import,undefined-variable,no-member,wrong-import-position
-import xml.etree.ElementTree as ElementTree  # pylint: disable=consider-using-from-import
+import xml.etree.ElementTree  # pylint: disable=consider-using-from-import
 
 # add parent directory(s) to path search for python modules
 sys.path.append("../")
@@ -31,7 +31,7 @@ def main():
     BUILD_DIRECTORY = "examples/build/"
 
     # TODO: automatically download and extract newest Dell CatalogPC.xml cab file
-    xml_root = ElementTree.parse("../CatalogPC.xml")
+    xml_root = xml.etree.ElementTree.parse("../CatalogPC.xml")
 
     count = 0
 

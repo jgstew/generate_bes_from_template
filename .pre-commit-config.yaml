@@ -132,3 +132,22 @@ repos:
         args: [--rcfile=.pylintrc]
         additional_dependencies: [setuptools]
         exclude: "BIOS_from_dell_catalog.py|TEMPLATE_Event_Logs_Retain-LOG-Windows.py"
+
+  - repo: https://github.com/regebro/pyroma
+    rev: "4.2"
+    hooks:
+      - id: pyroma
+        # Must be specified because of the default value in pyroma
+        always_run: false
+        files: |
+          (?x)^(
+              README.md|
+              pyproject.toml|
+              src/generate_bes_from_template/__init__.py|
+              src/generate_bes_from_template/generate_bes_from_template.py|
+              src/generate_bes_from_template/action_prefetch_from_template.py|
+              src/generate_bes_from_template/action_createfile_from_file.py|
+              setup.cfg|
+              setup.py
+          )$
+        stages: [manual]

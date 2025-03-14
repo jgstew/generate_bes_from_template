@@ -110,7 +110,7 @@ def GetComments(file_path, task_type = "Install"):
 
 
 def GetSysTracerActionScript(snapshot_name):
-    if (BES_DEBUGGING):
+    if BES_DEBUGGING:
         runsystracer = ''
         runsystracer += 'if {exists file "C:\Program Files\SysTracer\SysTracer.exe"}\n'
         runsystracer += '   waithidden "C:\Program Files\SysTracer\SysTracer.exe" -quiet -scan rfa -name "' + snapshot_name + '"\n'
@@ -127,11 +127,11 @@ def GetInstallActionScriptMSI(path):
 
 
 def GetUninstallActionScriptMSI(path):
-    return 'wait msiexec /x "{unique value of names of keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)}" /qn /norestart' % (GetMsiProperty(path, "ProductName"))
+    return 'wait msiexec /x "{unique value of names of keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)}" /qn /norestart' % GetMsiProperty(path, "ProductName")
 
 
 def GetUninstallRelevanceMSI(path):
-    return 'exists keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % (GetMsiProperty(path, "ProductName"))
+    return 'exists keys whose (value "DisplayName" of it as string starts with "%s" AND value "UninstallString" of it as string as lowercase contains "msiexec") of keys "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall" of (registry;native registry)' % GetMsiProperty(path, "ProductName")
 
 
 def GetPrefetchSingleFile(path, url = "", file_name = ""):
@@ -226,13 +226,13 @@ def newNode(doc, elementName, nodeText = None, elementAttributes = {}):
     doc = xml.dom.minidom.Document()
     newElement = xml.dom.minidom.Document().createElement(elementName)
 
-    if (nodeText):
+    if nodeText:
         if any((character in """<>&'\"""") for character in nodeText):
                 newElement.appendChild(xml.dom.minidom.Document().createCDATASection(nodeText))
         else:
                 newElement.appendChild(xml.dom.minidom.Document().createTextNode(nodeText))
 
-    if (elementAttributes):
+    if elementAttributes:
         for attribute in elementAttributes:
                 newElement.setAttribute(attribute, elementAttributes[attribute])
 

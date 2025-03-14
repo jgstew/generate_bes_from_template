@@ -152,3 +152,9 @@ repos:
               setup.py
           )$
         stages: [manual]
+
+  - repo: https://github.com/sirosen/slyp
+    rev: 0.8.2
+    hooks:
+      - id: slyp
+        exclude: "MSI_to_BES.py"

@@ -17,7 +17,7 @@ import chevron  # pylint: disable=import-error
 def generate_content_from_template(
     template_dict, template_file_path=None, partials_path="."
 ):
-    """return content string from template"""
+    """return content string from template file and dictionary"""
 
     # get template_file_path from template_dict
     if not template_file_path and "template_file_path" in template_dict:
@@ -37,6 +37,28 @@ def generate_content_from_template(
 
     return chevron.render(
         open(template_file_path, "r"),
+        template_dict,
+        partials_path=partials_path,
+    )
+
+
+def generate_content_from_template_string(
+    template_dict, template_string=None, partials_path="."
+):
+    """return content string from template file and dictionary"""
+
+    # get template_string from template_dict
+    if not template_string and "template_string" in template_dict:
+        template_string = template_dict["template_string"]
+
+    # template_string still missing, but required
+    if not template_string:
+        raise ValueError(
+            "`template_string` not in template_dict and not passed into function"
+        )
+
+    return chevron.render(
+        template_string,
         template_dict,
         partials_path=partials_path,
     )

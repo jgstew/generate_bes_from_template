@@ -1,26 +1,22 @@
 """
 Generate Dell BIOS Update fixlets from catalog file
+
+Requires:
+pip install bigfix-prefetch
+pip install generate-bes-from-template
+pip install cabarchive
 """
 
 import datetime
 import os
-import sys
 import urllib.error
 
 # pylint: disable=line-too-long,fixme,invalid-name,import-error,wildcard-import,undefined-variable,no-member,wrong-import-position
 import xml.etree.ElementTree  # pylint: disable=consider-using-from-import
 
-# add parent directory(s) to path search for python modules
-sys.path.append("../")
-sys.path.append("../../")
-
-
+import cabarchive
 from bigfix_prefetch import prefetch_from_dictionary  # noqa: F403
 from bigfix_prefetch.prefetch_from_url import url_to_prefetch  # noqa: F403
-
-sys.path.append(
-    os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "src")
-)
 
 # https://github.com/jgstew/generate_bes_from_template
 from generate_bes_from_template import generate_bes_from_template
@@ -30,14 +26,46 @@ def main():
     """Only called if this script is run directly"""
     BUILD_DIRECTORY = "examples/build/"
 
-    # TODO: automatically download and extract newest Dell CatalogPC.xml cab file
+    try:
+        os.mkdir(BUILD_DIRECTORY)
+    except FileExistsError:
+        pass
+
+    # automatically download the newest Dell CatalogPC.cab file
     # https://downloads.dell.com/catalog/CatalogPC.cab
-    xml_root = xml.etree.ElementTree.parse("../CatalogPC.xml")
+    if not os.path.exists(BUILD_DIRECTORY + "CatalogPC.cab"):
+        url_to_prefetch(
+            "https://downloads.dell.com/catalog/CatalogPC.cab",
+            True,
+            BUILD_DIRECTORY + "CatalogPC.cab",
+        )
+
+    # delete the CatalogPC.xml file so we can extract it again
+    # this is needed because the CatalogPC.cab file is updated frequently
+    # and we want to ensure we are using the latest version
+    if os.path.exists(BUILD_DIRECTORY + "CatalogPC.xml"):
+        os.remove(BUILD_DIRECTORY + "CatalogPC.xml")
+
+    # extract the CatalogPC.cab file to the build directory
+    with open(BUILD_DIRECTORY + "CatalogPC.cab", "rb") as f:
+        cab_data = f.read()
+
+    archive = cabarchive.CabArchive(cab_data)
+    for filename, cab_file_obj in archive.items():
+        output_path = os.path.join(BUILD_DIRECTORY, filename)
+        with open(output_path, "wb") as outfile:
+            outfile.write(cab_file_obj.buf)
+        print(f"Extracted: {filename} to {output_path}")
+
+    # parse the CatalogPC.xml file
+    xml_root = xml.etree.ElementTree.parse(BUILD_DIRECTORY + "CatalogPC.xml")
 
     count = 0
 
     # https://stackoverflow.com/a/33280875/861745
-    for elem in xml_root.findall("//SoftwareComponent/ComponentType[@value='BIOS']..."):
+    for elem in xml_root.findall(
+        ".//SoftwareComponent/ComponentType[@value='BIOS']..."
+    ):
 
         # skip windows 32bit BIOS updates
         if "_WN32_" in elem.attrib["path"]:
@@ -78,7 +106,7 @@ def main():
         )
         print(elem.attrib["size"])
         print(elem.attrib["hashMD5"])
-        print("http://downloads.dell.com/" + elem.attrib["path"])
+        print("https://downloads.dell.com/" + elem.attrib["path"])
 
         # Check file size matches:
         if int(prefetch_dictionary_result["file_size"]) != int(elem.attrib["size"]):
@@ -115,7 +143,7 @@ def main():
         bios_dependency = elem.find(
             "./SupportedDevices/Device/Dependency[@componentType='BIOS']"
         )
-        if bios_dependency:
+        if bios_dependency is not None:
             template_dict["bios_version_minimum"] = bios_dependency.attrib["version"]
 
         # Read the model from the catalog. There can be more than 1 model per BIOS update

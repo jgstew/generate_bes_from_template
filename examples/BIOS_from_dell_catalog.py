@@ -31,6 +31,7 @@ def main():
     BUILD_DIRECTORY = "examples/build/"
 
     # TODO: automatically download and extract newest Dell CatalogPC.xml cab file
+    # https://downloads.dell.com/catalog/CatalogPC.cab
     xml_root = xml.etree.ElementTree.parse("../CatalogPC.xml")
 
     count = 0
@@ -62,7 +63,7 @@ def main():
         # skip failed downloads
         try:
             prefetch_dictionary_result = url_to_prefetch(
-                "http://downloads.dell.com/" + elem.attrib["path"], True
+                "https://downloads.dell.com/" + elem.attrib["path"], True
             )  # noqa: F405
         except urllib.error.HTTPError:
             continue

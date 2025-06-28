@@ -31,6 +31,16 @@ def main():
     except FileExistsError:
         pass
 
+    # delete the CatalogPC.cab file if it is older than 1 week
+    # this is needed because the CatalogPC.cab file is updated frequently
+    if os.path.exists(BUILD_DIRECTORY + "CatalogPC.cab"):
+        file_mod_time = os.path.getmtime(BUILD_DIRECTORY + "CatalogPC.cab")
+        if (
+            datetime.datetime.now() - datetime.datetime.fromtimestamp(file_mod_time)
+        ).days > 7:
+            os.remove(BUILD_DIRECTORY + "CatalogPC.cab")
+            print("Deleted old CatalogPC.cab file")
+
     # automatically download the newest Dell CatalogPC.cab file
     # https://downloads.dell.com/catalog/CatalogPC.cab
     if not os.path.exists(BUILD_DIRECTORY + "CatalogPC.cab"):
@@ -61,6 +71,7 @@ def main():
     xml_root = xml.etree.ElementTree.parse(BUILD_DIRECTORY + "CatalogPC.xml")
 
     count = 0
+    xml_bios_count = 0
 
     # https://stackoverflow.com/a/33280875/861745
     for elem in xml_root.findall(
@@ -70,6 +81,8 @@ def main():
         # skip windows 32bit BIOS updates
         if "_WN32_" in elem.attrib["path"]:
             continue
+
+        xml_bios_count += 1
 
         # do not download file if generated task already exists
         file_exists = False
@@ -184,7 +197,9 @@ def main():
                         )
                     )
         count += 1
-    print(count)
+    print(
+        f"Done generating {count} Dell BIOS Update fixlets of {xml_bios_count} in XML."
+    )
 
 
 # if called directly, then run this example:
